@@ -4,6 +4,8 @@ backend:
   branch: main
   auth_type: pkce
   app_id: Ov23lixiDIoCIcgDrke4
+  site_domain: jinwonmin.github.io
+  auth_endpoint: ""
 
 media_folder: public/images
 public_folder: /images
