@@ -23,7 +23,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-3 sm:gap-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}

@@ -30,7 +30,7 @@ export default async function PostPage({ params }: Props) {
   const allPosts = getAllPostMetas();
 
   return (
-    <div className="flex gap-0 -mx-4 sm:-mx-6">
+    <div className="flex gap-0 lg:-mx-4">
       {/* Left Sidebar - TOC */}
       <Sidebar>
         <nav>
@@ -53,7 +53,7 @@ export default async function PostPage({ params }: Props) {
       </Sidebar>
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 px-4 sm:px-8">
+      <div className="flex-1 min-w-0 px-0 sm:px-4 lg:px-8">
         <article>
           <header className="space-y-4 border-b border-gray-200 dark:border-gray-800 pb-10 pt-2">
             <div>
@@ -64,7 +64,7 @@ export default async function PostPage({ params }: Props) {
                 {formatDate(post.date)}
               </time>
             </div>
-            <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">
+            <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl lg:text-4xl">
               {post.title}
             </h1>
             <div className="flex items-center gap-4">
