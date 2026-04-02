@@ -2,7 +2,6 @@ backend:
   name: github
   repo: JINWONMIN/minsnote.github.io
   branch: main
-  site_domain: minsnote.netlify.app
 
 media_folder: public/images
 public_folder: /images
