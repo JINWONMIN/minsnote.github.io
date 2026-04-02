@@ -1,9 +1,11 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #111827;
+  --background: #030712;
+  --foreground: #f9fafb;
 }
 
 @theme inline {
@@ -23,13 +25,6 @@
   --color-primary-900: #881337;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #030712;
-    --foreground: #f9fafb;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -37,9 +32,9 @@ body {
 
 /* Prose styling */
 .prose {
-  --tw-prose-body: #374151;
-  --tw-prose-headings: #111827;
-  --tw-prose-links: #e11d48;
+  --tw-prose-body: #d1d5db;
+  --tw-prose-headings: #f9fafb;
+  --tw-prose-links: #fb7185;
 }
 
 .prose pre {
@@ -56,11 +51,11 @@ body {
 }
 
 .prose :not(pre) > code {
-  background-color: #f3f4f6;
+  background-color: #1f2937;
   padding: 0.2rem 0.4rem;
   border-radius: 0.375rem;
   font-weight: 500;
-  color: #e11d48;
+  color: #fb7185;
 }
 
 .prose a {
@@ -71,17 +66,4 @@ body {
 
 .prose a:hover {
   text-decoration: underline;
-}
-
-@media (prefers-color-scheme: dark) {
-  .prose {
-    --tw-prose-body: #d1d5db;
-    --tw-prose-headings: #f9fafb;
-    --tw-prose-links: #fb7185;
-  }
-
-  .prose :not(pre) > code {
-    background-color: #1f2937;
-    color: #fb7185;
-  }
 }
