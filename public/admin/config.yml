@@ -1,0 +1,30 @@
+backend:
+  name: github
+  repo: JINWONMIN/minsnote.github.io
+  branch: main
+  base_url: https://minsnote.netlify.app
+
+media_folder: public/images
+public_folder: /images
+
+locale: ko
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: posts
+    label: Posts
+    folder: posts
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    sort: "date:desc"
+    fields:
+      - { label: "제목", name: title, widget: string }
+      - { label: "날짜", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "설명", name: description, widget: string }
+      - { label: "태그", name: tags, widget: list, allow_add: true }
+      - { label: "본문", name: body, widget: markdown }

@@ -1,25 +1,18 @@
 import { getAllPostMetas } from "@/lib/posts";
-import PostCard from "@/components/PostCard";
+import HomeContent from "@/components/HomeContent";
 
 export default function Home() {
   const posts = getAllPostMetas();
 
-  return (
-    <div>
-      <section className="mb-10">
-        <h1 className="text-3xl font-bold mb-2">Blog</h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          개발하며 배운 것들을 기록합니다.
-        </p>
-      </section>
+  const tagCounts: Record<string, number> = {};
+  posts.forEach((post) => {
+    post.tags.forEach((tag) => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+  const sortedTags = Object.entries(tagCounts).sort(
+    (a, b) => b[1] - a[1]
+  ) as [string, number][];
 
-      <div className="divide-y divide-gray-200 dark:divide-gray-800">
-        {posts.length > 0 ? (
-          posts.map((post) => <PostCard key={post.slug} post={post} />)
-        ) : (
-          <p className="text-gray-500 py-10">아직 작성된 포스트가 없습니다.</p>
-        )}
-      </div>
-    </div>
-  );
+  return <HomeContent posts={posts} tags={sortedTags} />;
 }

@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "minsnote blog",
-    template: "%s | minsnote blog",
+    default: "minsnote",
+    template: "%s | minsnote",
   },
-  description: "개발 블로그 by minsnote",
+  description: "개발하며 배운 것들을 기록하는 블로그",
 };
 
 export default function RootLayout({
@@ -30,11 +30,11 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+      <body className="min-h-full flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-[family-name:var(--font-space-grotesk)] antialiased">
         <Header />
-        <main className="flex-1 w-full max-w-3xl mx-auto px-6 py-10">
+        <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-12">
           {children}
         </main>
         <Footer />
