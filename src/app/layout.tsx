@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth dark`}
     >
       <body className="min-h-full flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-[family-name:var(--font-space-grotesk)] antialiased">
         <Header />
