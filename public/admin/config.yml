@@ -2,7 +2,8 @@ backend:
   name: github
   repo: JINWONMIN/minsnote.github.io
   branch: main
-  base_url: https://minsnote.netlify.app
+  auth_type: pkce
+  app_id: Ov23lixiDIoCIcgDrke4
 
 media_folder: public/images
 public_folder: /images
