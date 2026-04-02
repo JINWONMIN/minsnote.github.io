@@ -35,14 +35,22 @@ body {
   --tw-prose-body: #d1d5db;
   --tw-prose-headings: #f9fafb;
   --tw-prose-links: #fb7185;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .prose pre {
   background-color: #1e1e2e;
   border-radius: 0.75rem;
-  padding: 1.25rem;
+  padding: 0.75rem;
   overflow-x: auto;
   border: 1px solid #2e2e3e;
+}
+
+@media (min-width: 640px) {
+  .prose pre {
+    padding: 1.25rem;
+  }
 }
 
 .prose code {

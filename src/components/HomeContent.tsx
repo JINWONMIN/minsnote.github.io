@@ -19,16 +19,16 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
     : posts;
 
   return (
-    <div className="flex gap-0 -mx-4 sm:-mx-6">
+    <div className="flex gap-0 lg:-mx-4">
       {/* Left Sidebar */}
       <Sidebar>
         <TagNav tags={tags} activeTag={activeTag} onTagClick={setActiveTag} />
       </Sidebar>
 
       {/* Main Content */}
-      <div className="flex-1 min-w-0 px-4 sm:px-8">
+      <div className="flex-1 min-w-0 px-0 sm:px-4 lg:px-8">
         <div className="space-y-2 pb-6 pt-2">
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl">
+          <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl lg:text-4xl">
             {activeTag ? activeTag : "Latest"}
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
