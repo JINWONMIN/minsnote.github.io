@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import "highlight.js/styles/github-dark.min.css";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
