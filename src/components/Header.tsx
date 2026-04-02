@@ -8,7 +8,7 @@ export default function Header() {
           href="/"
           className="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
-          jinwonmin
+          minsnote
         </Link>
         <nav className="flex gap-6 text-sm">
           <Link
@@ -24,7 +24,7 @@ export default function Header() {
             About
           </Link>
           <a
-            href="https://github.com/jinwonmin"
+            href="https://github.com/JINWONMIN"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"

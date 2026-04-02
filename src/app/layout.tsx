@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "jinwonmin blog",
-    template: "%s | jinwonmin blog",
+    default: "minsnote blog",
+    template: "%s | minsnote blog",
   },
-  description: "개발 블로그 by jinwonmin",
+  description: "개발 블로그 by minsnote",
 };
 
 export default function RootLayout({
