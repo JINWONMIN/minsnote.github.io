@@ -2,6 +2,7 @@ backend:
   name: github
   repo: JINWONMIN/minsnote.github.io
   branch: main
+  base_url: https://sveltia-cms-auth.minsnote-cms-auth.workers.dev
 
 media_folder: public/images
 public_folder: /images
