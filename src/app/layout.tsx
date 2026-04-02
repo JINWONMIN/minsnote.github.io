@@ -15,11 +15,17 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jinwonmin.github.io/minsnote.github.io"),
   title: {
     default: "minsnote",
     template: "%s | minsnote",
   },
   description: "개발하며 배운 것들을 기록하는 블로그",
+  openGraph: {
+    type: "website",
+    siteName: "minsnote",
+    locale: "ko_KR",
+  },
 };
 
 export default function RootLayout({
