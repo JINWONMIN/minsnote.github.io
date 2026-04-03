@@ -15,6 +15,8 @@ export interface Post {
   description: string;
   tags: string[];
   readingTime: string;
+  series?: string;
+  seriesOrder?: number;
   content: string;
 }
 
@@ -25,6 +27,8 @@ export interface PostMeta {
   description: string;
   tags: string[];
   readingTime: string;
+  series?: string;
+  seriesOrder?: number;
 }
 
 const postsDirectory = path.join(process.cwd(), "posts");
@@ -48,6 +52,8 @@ export function getAllPostMetas(): PostMeta[] {
         description: data.description || "",
         tags: data.tags || [],
         readingTime: stats.text,
+        series: data.series || undefined,
+        seriesOrder: data.seriesOrder || undefined,
       };
     });
 
@@ -75,6 +81,8 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     description: data.description || "",
     tags: data.tags || [],
     readingTime: stats.text,
+    series: data.series || undefined,
+    seriesOrder: data.seriesOrder || undefined,
     content: contentHtml,
   };
 }

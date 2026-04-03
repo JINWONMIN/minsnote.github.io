@@ -10,6 +10,8 @@ import CopyProtection from "@/components/CopyProtection";
 import CodeCopyButton from "@/components/CodeCopyButton";
 import ReadingProgress from "@/components/ReadingProgress";
 import ImageLightbox from "@/components/ImageLightbox";
+import SeriesNav from "@/components/SeriesNav";
+import SeriesArrows from "@/components/SeriesArrows";
 import type { Metadata } from "next";
 
 interface Props {
@@ -61,6 +63,9 @@ export default async function PostPage({ params }: Props) {
   return (
     <div className="flex gap-0 lg:-mx-4">
       <ReadingProgress />
+      {post.series && (
+        <SeriesArrows series={post.series} currentSlug={slug} posts={allPosts} />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -129,6 +134,10 @@ export default async function PostPage({ params }: Props) {
             className="prose prose-gray dark:prose-invert max-w-none pt-10 prose-a:text-primary-500 prose-a:no-underline hover:prose-a:underline"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
+          {post.series && (
+            <SeriesNav series={post.series} currentSlug={slug} posts={allPosts} />
+          )}
         </article>
 
         <Comments slug={slug} />
