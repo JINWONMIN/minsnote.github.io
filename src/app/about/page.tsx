@@ -49,8 +49,8 @@ export default function AboutPage() {
               안녕하세요, <strong>minsnote</strong>입니다.
             </p>
             <p>
-              개발하며 배운 것들을 기록하는 블로그입니다. 주로 웹 개발, TypeScript,
-              그리고 다양한 기술 주제에 대해 글을 씁니다.
+              개인적인 생각을 이모저모 적어 놓는 중입니다. 
+              주로 웹 개발, TypeScript, 그리고 다양한 주제에 대해 글을 작성하려고 하는데 음.. 언제까지 하게 될지는,,, ㅎㅎㅎ
             </p>
           </div>
         </div>
