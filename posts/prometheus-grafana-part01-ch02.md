@@ -7,6 +7,8 @@ tags:
   - Grafana
   - 모니터링
   - 옵저버빌리티
+series: Prometheus & Grafana
+seriesOrder: 2
 ---
 
 > **참고**: 이 글은 Prometheus (v3.2.1)와 Grafana 공식 문서를 기반으로 Claude를 활용하여 요약·정리한 내용입니다. 정확한 내용은 공식 문서를 참조해 주세요.
