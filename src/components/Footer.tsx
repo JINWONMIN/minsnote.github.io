@@ -1,4 +1,5 @@
 import Link from "next/link";
+import VisitorCounter from "./VisitorCounter";
 
 export default function Footer() {
   return (
@@ -18,6 +19,7 @@ export default function Footer() {
               </svg>
             </a>
           </div>
+          <VisitorCounter />
           <div className="text-sm text-gray-400 dark:text-gray-500">
             &copy; {new Date().getFullYear()}{" "}
             <Link href="/" className="hover:text-primary-500 transition-colors">
