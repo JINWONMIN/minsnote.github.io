@@ -22,9 +22,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
+  const url = `https://jinwonmin.github.io/posts/${slug}`;
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url,
+      type: "article",
+      publishedTime: new Date(post.date).toISOString(),
+      tags: post.tags,
+    },
   };
 }
 
@@ -33,8 +45,23 @@ export default async function PostPage({ params }: Props) {
   const post = await getPostBySlug(slug);
   const allPosts = getAllPostMetas();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: new Date(post.date).toISOString(),
+    author: { "@type": "Person", name: "minsnote" },
+    url: `https://jinwonmin.github.io/posts/${slug}`,
+    keywords: post.tags.join(", "),
+  };
+
   return (
     <div className="flex gap-0 lg:-mx-4">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Left Sidebar - TOC */}
       <Sidebar>
         <nav>
