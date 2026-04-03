@@ -134,7 +134,7 @@ export default async function PostPage({ params }: Props) {
         <Comments slug={slug} />
 
         {/* Recent Posts */}
-        <RecentPosts posts={allPosts} currentSlug={slug} />
+        <RecentPosts posts={allPosts} currentSlug={slug} currentTags={post.tags} />
       </div>
     </div>
   );
