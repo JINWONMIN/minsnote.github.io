@@ -27,4 +27,6 @@ collections:
       - { label: "날짜", name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
       - { label: "설명", name: description, widget: string }
       - { label: "태그", name: tags, widget: list, allow_add: true }
+      - { label: "시리즈", name: series, widget: string, required: false }
+      - { label: "시리즈 순서", name: seriesOrder, widget: number, required: false, value_type: int }
       - { label: "본문", name: body, widget: markdown }

@@ -6,6 +6,8 @@ tags:
   - Next.js
   - Sveltia CMS
   - 블로그
+series: 블로그 개발기
+seriesOrder: 1
 ---
 
 ## 끄적끄적,,,
