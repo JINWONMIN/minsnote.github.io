@@ -1,7 +1,5 @@
 # minsnote
 
-개발하며 배운 것들을 기록하는 블로그.
-
 https://jinwonmin.github.io
 
 ## 기술 스택
