@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/formatDate";
+import { highlightText } from "@/lib/highlightText";
 import type { PostMeta } from "@/lib/posts";
 
 interface PostCardProps {
   post: PostMeta;
+  highlightQuery?: string;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, highlightQuery = "" }: PostCardProps) {
   return (
     <article className="py-8">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-8">
@@ -23,7 +25,7 @@ export default function PostCard({ post }: PostCardProps) {
           <div>
             <Link href={`/posts/${post.slug}`}>
               <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
-                {post.title}
+                {highlightText(post.title, highlightQuery)}
               </h2>
             </Link>
           </div>
@@ -36,14 +38,14 @@ export default function PostCard({ post }: PostCardProps) {
                   href={`/tags/${encodeURIComponent(tag)}`}
                   className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
                 >
-                  {tag}
+                  {highlightText(tag, highlightQuery)}
                 </Link>
               ))}
             </div>
           )}
 
           <p className="text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
-            {post.description}
+            {highlightText(post.description, highlightQuery)}
           </p>
 
           <div className="flex items-center gap-4">
