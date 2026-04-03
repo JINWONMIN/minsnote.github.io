@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jinwonmin.github.io/minsnote.github.io"),
+  metadataBase: new URL("https://jinwonmin.github.io"),
   title: {
     default: "minsnote",
     template: "%s | minsnote",
