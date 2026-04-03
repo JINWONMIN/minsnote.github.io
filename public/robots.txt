@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jinwonmin.github.io/minsnote.github.io/sitemap.xml
