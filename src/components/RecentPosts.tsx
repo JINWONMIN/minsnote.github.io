@@ -5,22 +5,32 @@ import type { PostMeta } from "@/lib/posts";
 interface RecentPostsProps {
   posts: PostMeta[];
   currentSlug: string;
+  currentTags?: string[];
 }
 
-export default function RecentPosts({ posts, currentSlug }: RecentPostsProps) {
-  const recentPosts = posts
-    .filter((post) => post.slug !== currentSlug)
+export default function RecentPosts({ posts, currentSlug, currentTags = [] }: RecentPostsProps) {
+  const otherPosts = posts.filter((post) => post.slug !== currentSlug);
+
+  // Sort by tag similarity, then by date
+  const relatedPosts = otherPosts
+    .map((post) => ({
+      ...post,
+      score: post.tags.filter((tag) => currentTags.includes(tag)).length,
+    }))
+    .sort((a, b) => b.score - a.score || new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 2);
 
-  if (recentPosts.length === 0) return null;
+  if (relatedPosts.length === 0) return null;
+
+  const hasRelated = relatedPosts[0].score > 0;
 
   return (
     <div className="border-t border-gray-200 dark:border-gray-800 mt-16 pt-10">
       <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-        다른 글 읽기
+        {hasRelated ? "관련 글" : "다른 글 읽기"}
       </h2>
       <div className="grid gap-6 sm:grid-cols-2">
-        {recentPosts.map((post) => (
+        {relatedPosts.map((post) => (
           <Link
             key={post.slug}
             href={`/posts/${post.slug}`}
