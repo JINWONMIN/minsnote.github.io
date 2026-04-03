@@ -8,6 +8,7 @@ import PostStats from "@/components/PostStats";
 import Comments from "@/components/Comments";
 import CopyProtection from "@/components/CopyProtection";
 import CodeCopyButton from "@/components/CodeCopyButton";
+import ReadingProgress from "@/components/ReadingProgress";
 import type { Metadata } from "next";
 
 interface Props {
@@ -58,6 +59,7 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="flex gap-0 lg:-mx-4">
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
