@@ -27,6 +27,11 @@ export const metadata: Metadata = {
     siteName: "minsnote",
     locale: "ko_KR",
   },
+  verification: {
+    other: {
+      "naver-site-verification": "691c49a5a029a53d09a4859edfade82b82b741f8",
+    },
+  },
 };
 
 export default function RootLayout({
