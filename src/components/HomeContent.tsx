@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import PostCard from "./PostCard";
 import TagNav from "./TagNav";
 import Sidebar from "./Sidebar";
 import SearchInput from "./SearchInput";
 import { matchesQuery } from "@/lib/searchPosts";
 import type { PostMeta } from "@/lib/posts";
+
+const POSTS_PER_PAGE = 5;
 
 interface HomeContentProps {
   posts: PostMeta[];
@@ -16,10 +18,39 @@ interface HomeContentProps {
 export default function HomeContent({ posts, tags }: HomeContentProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   const filteredPosts = posts
     .filter((post) => !activeTag || post.tags.includes(activeTag))
     .filter((post) => !searchQuery.trim() || matchesQuery(post, searchQuery));
+
+  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredPosts.length;
+
+  // Reset visible count when filter changes
+  useEffect(() => {
+    setVisibleCount(POSTS_PER_PAGE);
+  }, [activeTag, searchQuery]);
+
+  // Infinite scroll with IntersectionObserver
+  const loadMore = useCallback(() => {
+    setVisibleCount((prev) => prev + POSTS_PER_PAGE);
+  }, []);
+
+  useEffect(() => {
+    const el = loaderRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [loadMore]);
 
   const heading = searchQuery.trim()
     ? activeTag
@@ -59,8 +90,8 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
         <SearchInput value={searchQuery} onChange={setSearchQuery} />
 
         <div className="divide-y divide-gray-200 dark:divide-gray-800">
-          {filteredPosts.length > 0 ? (
-            filteredPosts.map((post) => (
+          {visiblePosts.length > 0 ? (
+            visiblePosts.map((post) => (
               <PostCard
                 key={post.slug}
                 post={post}
@@ -73,6 +104,20 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
             </p>
           )}
         </div>
+
+        {hasMore && (
+          <>
+            <div ref={loaderRef} />
+            <div className="py-8 text-center">
+              <button
+                onClick={loadMore}
+                className="rounded-lg border border-gray-300 dark:border-gray-700 px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                Load more
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
