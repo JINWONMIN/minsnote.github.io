@@ -5,6 +5,7 @@ description: 깃허브 블로그를 만들면서 겪었던 시행착오...
 tags:
   - Next.js
   - Sveltia CMS
+  - 블로그
 ---
 
 ## 끄적끄적,,,
