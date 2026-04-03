@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "minsnote",
     template: "%s | minsnote",
   },
-  description: "개발하며 배운 것들을 기록하는 블로그",
+  description: "이모저모 주저리주저리 ~~",
   openGraph: {
     type: "website",
     siteName: "minsnote",
