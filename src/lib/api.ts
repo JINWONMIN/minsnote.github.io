@@ -41,6 +41,22 @@ export async function getVisitors(): Promise<{ today: number; total: number }> {
   return res.json();
 }
 
+export async function getLikes(slug: string): Promise<{ likes: number; liked: boolean }> {
+  const res = await fetch(`${API_BASE}/api/likes?slug=${encodeURIComponent(slug)}`, {
+    headers: headers(),
+  });
+  return res.json();
+}
+
+export async function toggleLike(slug: string): Promise<{ likes: number; liked: boolean }> {
+  const res = await fetch(`${API_BASE}/api/likes`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ slug }),
+  });
+  return res.json();
+}
+
 export interface Comment {
   id: number;
   nickname: string;
