@@ -46,6 +46,7 @@ export interface Comment {
   nickname: string;
   content: string;
   created_at: string;
+  parent_id: number | null;
 }
 
 export async function getComments(slug: string): Promise<Comment[]> {
@@ -56,11 +57,11 @@ export async function getComments(slug: string): Promise<Comment[]> {
   return data.comments;
 }
 
-export async function postComment(slug: string, nickname: string, content: string, password: string): Promise<{ success: boolean; error?: string }> {
+export async function postComment(slug: string, nickname: string, content: string, password: string, parentId?: number | null): Promise<{ success: boolean; error?: string }> {
   const res = await fetch(`${API_BASE}/api/comments`, {
     method: "POST",
     headers: headers(),
-    body: JSON.stringify({ slug, nickname, content, password }),
+    body: JSON.stringify({ slug, nickname, content, password, parent_id: parentId ?? null }),
   });
   return res.json();
 }
