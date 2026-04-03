@@ -167,3 +167,12 @@ pre:hover .code-copy-btn {
 .prose a:hover {
   text-decoration: underline;
 }
+
+.prose img {
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.prose img:hover {
+  opacity: 0.85;
+}
