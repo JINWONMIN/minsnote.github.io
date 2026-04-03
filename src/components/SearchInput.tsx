@@ -30,7 +30,7 @@ export default function SearchInput({ value, onChange }: SearchInputProps) {
   const showBadge = !focused && !value;
 
   return (
-    <div className="relative mb-6">
+    <div className="relative mb-4">
       <svg
         className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500"
         fill="none"

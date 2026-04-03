@@ -47,7 +47,7 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
 
       {/* Main Content */}
       <div className="flex-1 min-w-0 px-0 sm:px-4 lg:px-8">
-        <div className="space-y-2 pb-6 pt-2">
+        <div className="space-y-2 pb-3 pt-2">
           <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl lg:text-4xl">
             {heading}
           </h1>
