@@ -8,6 +8,15 @@ function headers(): Record<string, string> {
   };
 }
 
+export async function getPostStats(slug: string): Promise<{ views: number; likes: number; liked: boolean }> {
+  const res = await fetch(`${API_BASE}/api/post-stats`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({ slug }),
+  });
+  return res.json();
+}
+
 export async function trackView(slug: string): Promise<number> {
   const res = await fetch(`${API_BASE}/api/views`, {
     method: "POST",

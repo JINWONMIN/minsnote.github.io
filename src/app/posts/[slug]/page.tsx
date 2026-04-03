@@ -4,9 +4,8 @@ import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import TableOfContents from "@/components/TableOfContents";
 import RecentPosts from "@/components/RecentPosts";
-import ViewCounter from "@/components/ViewCounter";
+import PostStats from "@/components/PostStats";
 import Comments from "@/components/Comments";
-import LikeButton from "@/components/LikeButton";
 import CopyProtection from "@/components/CopyProtection";
 import CodeCopyButton from "@/components/CodeCopyButton";
 import type { Metadata } from "next";
@@ -116,8 +115,7 @@ export default async function PostPage({ params }: Props) {
               <span className="text-xs text-gray-400 dark:text-gray-500">
                 {post.readingTime}
               </span>
-              <ViewCounter slug={slug} />
-              <LikeButton slug={slug} />
+              <PostStats slug={slug} />
             </div>
           </header>
 
