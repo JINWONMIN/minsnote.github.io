@@ -4,6 +4,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  --background: #ffffff;
+  --foreground: #111827;
+}
+
+.dark {
   --background: #030712;
   --foreground: #f9fafb;
 }
@@ -75,18 +80,29 @@ body {
 
 /* Prose styling */
 .prose {
-  --tw-prose-body: #d1d5db;
-  --tw-prose-headings: #f9fafb;
-  --tw-prose-links: #fb7185;
+  --tw-prose-body: #374151;
+  --tw-prose-headings: #111827;
+  --tw-prose-links: #e11d48;
   word-break: break-word;
   overflow-wrap: break-word;
 }
 
+.dark .prose {
+  --tw-prose-body: #d1d5db;
+  --tw-prose-headings: #f9fafb;
+  --tw-prose-links: #fb7185;
+}
+
 .prose pre {
-  background-color: #1e1e2e;
+  background-color: #f3f4f6;
   border-radius: 0.75rem;
   padding: 0.75rem;
   overflow-x: auto;
+  border: 1px solid #e5e7eb;
+}
+
+.dark .prose pre {
+  background-color: #1e1e2e;
   border: 1px solid #2e2e3e;
 }
 
@@ -109,6 +125,11 @@ pre:hover .code-copy-btn {
 }
 
 .code-copy-btn:hover {
+  color: #111827;
+  background-color: #e5e7eb;
+}
+
+.dark .code-copy-btn:hover {
   color: #f9fafb;
   background-color: #374151;
 }
@@ -125,10 +146,15 @@ pre:hover .code-copy-btn {
 }
 
 .prose :not(pre) > code {
-  background-color: #1f2937;
+  background-color: #f3f4f6;
   padding: 0.2rem 0.4rem;
   border-radius: 0.375rem;
   font-weight: 500;
+  color: #e11d48;
+}
+
+.dark .prose :not(pre) > code {
+  background-color: #1f2937;
   color: #fb7185;
 }
 
