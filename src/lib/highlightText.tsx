@@ -22,7 +22,7 @@ export function highlightText(
         regex.test(part) ? (
           <mark
             key={i}
-            className="bg-yellow-400/20 text-yellow-200 rounded-sm px-0.5"
+            className="bg-yellow-200/60 text-yellow-900 dark:bg-yellow-400/20 dark:text-yellow-200 rounded-sm px-0.5"
           >
             {part}
           </mark>

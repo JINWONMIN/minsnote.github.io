@@ -47,8 +47,16 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth dark`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t=localStorage.getItem('theme');document.documentElement.classList.toggle('dark',t?t==='dark':true)})()`,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-[family-name:var(--font-space-grotesk)] antialiased">
         <Header />
         <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-12">
