@@ -39,11 +39,29 @@ export async function getComments(slug: string): Promise<Comment[]> {
   return data.comments;
 }
 
-export async function postComment(slug: string, nickname: string, content: string): Promise<{ success: boolean; error?: string }> {
+export async function postComment(slug: string, nickname: string, content: string, password: string): Promise<{ success: boolean; error?: string }> {
   const res = await fetch(`${API_BASE}/api/comments`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ slug, nickname, content }),
+    body: JSON.stringify({ slug, nickname, content, password }),
+  });
+  return res.json();
+}
+
+export async function deleteComment(id: number, password: string): Promise<{ success: boolean; error?: string }> {
+  const res = await fetch(`${API_BASE}/api/comments`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, password }),
+  });
+  return res.json();
+}
+
+export async function editComment(id: number, content: string, password: string): Promise<{ success: boolean; error?: string }> {
+  const res = await fetch(`${API_BASE}/api/comments`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, content, password }),
   });
   return res.json();
 }
