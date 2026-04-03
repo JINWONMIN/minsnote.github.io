@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "Blog" },
@@ -33,6 +34,7 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          <ThemeToggle />
           <a
             href="https://github.com/JINWONMIN"
             target="_blank"
