@@ -4,6 +4,8 @@ import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import TableOfContents from "@/components/TableOfContents";
 import RecentPosts from "@/components/RecentPosts";
+import ViewCounter from "@/components/ViewCounter";
+import Comments from "@/components/Comments";
 import type { Metadata } from "next";
 
 interface Props {
@@ -84,6 +86,7 @@ export default async function PostPage({ params }: Props) {
               <span className="text-xs text-gray-400 dark:text-gray-500">
                 {post.readingTime}
               </span>
+              <ViewCounter slug={slug} />
             </div>
           </header>
 
@@ -92,6 +95,8 @@ export default async function PostPage({ params }: Props) {
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>
+
+        <Comments slug={slug} />
 
         {/* Recent Posts */}
         <RecentPosts posts={allPosts} currentSlug={slug} />
