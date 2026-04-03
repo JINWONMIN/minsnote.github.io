@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const BASE_URL = "https://jinwonmin.github.io/minsnote.github.io";
+const BASE_URL = "https://jinwonmin.github.io";
 const postsDir = path.join(process.cwd(), "posts");
 const outDir = path.join(process.cwd(), "out");
 
