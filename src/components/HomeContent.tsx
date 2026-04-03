@@ -34,7 +34,7 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
           <p className="text-sm text-gray-500 dark:text-gray-400">
             {activeTag
               ? `${filteredPosts.length}개의 포스트`
-              : "이모저모 주저리주저리,,,"}
+              : ""}
           </p>
         </div>
 
