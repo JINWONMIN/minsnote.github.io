@@ -6,6 +6,8 @@ import TableOfContents from "@/components/TableOfContents";
 import RecentPosts from "@/components/RecentPosts";
 import ViewCounter from "@/components/ViewCounter";
 import Comments from "@/components/Comments";
+import CopyProtection from "@/components/CopyProtection";
+import CodeCopyButton from "@/components/CodeCopyButton";
 import type { Metadata } from "next";
 
 interface Props {
@@ -90,6 +92,8 @@ export default async function PostPage({ params }: Props) {
             </div>
           </header>
 
+          <CopyProtection />
+          <CodeCopyButton />
           <div
             className="prose prose-gray dark:prose-invert max-w-none pt-10 prose-a:text-primary-500 prose-a:no-underline hover:prose-a:underline"
             dangerouslySetInnerHTML={{ __html: post.content }}
