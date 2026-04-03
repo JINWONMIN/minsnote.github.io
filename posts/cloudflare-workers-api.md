@@ -6,6 +6,8 @@ tags:
   - Cloudflare Workers
   - API
   - 블로그
+series: 블로그 개발기
+seriesOrder: 2
 ---
 
 > 소스 코드: [GitHub](https://github.com/JINWONMIN/minsnote-api)
