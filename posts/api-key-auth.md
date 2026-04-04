@@ -1,11 +1,12 @@
 ---
-title: 공개 API에 인증키 달기
+title: "3편: 공개 API에 인증키 달기"
 date: 2026-04-03
 description: Cloudflare Workers API에 X-API-Key 헤더 인증을 적용하고, GitHub Actions 빌드에 시크릿을 주입하는 과정
 tags:
   - Cloudflare Workers
   - API
   - 보안
+  - Blog Series
 series: 블로그 개발기
 seriesOrder: 3
 ---

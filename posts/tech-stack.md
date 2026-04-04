@@ -1,11 +1,11 @@
 ---
-title: 블로그 기술 스택
+title: "1편: 블로그 기술 스택"
 date: 2026-03-27
 description: 깃허브 블로그를 만들면서 겪었던 시행착오...
 tags:
   - Next.js
   - Sveltia CMS
-  - 블로그
+  - Blog Series
 series: 블로그 개발기
 seriesOrder: 1
 ---

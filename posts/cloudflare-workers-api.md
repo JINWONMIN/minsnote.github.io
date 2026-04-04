@@ -1,11 +1,11 @@
 ---
-title: Cloudflare Workers로 블로그 API 만들기
+title: "2편: Cloudflare Workers로 블로그 API 만들기"
 date: 2026-04-03
 description: 정적 블로그에 조회수, 방문자 카운터, 댓글 기능을 붙이기 위해 Cloudflare Workers를 선택한 이유와 구현 과정
 tags:
   - Cloudflare Workers
   - API
-  - 블로그
+  - Blog Series
 series: 블로그 개발기
 seriesOrder: 2
 ---
