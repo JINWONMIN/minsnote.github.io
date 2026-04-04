@@ -5,25 +5,44 @@ import PostCard from "./PostCard";
 import TagNav from "./TagNav";
 import Sidebar from "./Sidebar";
 import SearchInput from "./SearchInput";
+import MobileFilterBar from "./MobileFilterBar";
 import { matchesQuery } from "@/lib/searchPosts";
 import type { PostMeta } from "@/lib/posts";
 
 const POSTS_PER_PAGE = 5;
 
+interface SeriesInfo {
+  name: string;
+  count: number;
+}
+
 interface HomeContentProps {
   posts: PostMeta[];
   tags: [string, number][];
+  series: SeriesInfo[];
 }
 
-export default function HomeContent({ posts, tags }: HomeContentProps) {
+export default function HomeContent({ posts, tags, series }: HomeContentProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeSeries, setActiveSeries] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const filteredPosts = posts
-    .filter((post) => !activeTag || post.tags.includes(activeTag))
-    .filter((post) => !searchQuery.trim() || matchesQuery(post, searchQuery));
+    .filter((post) => {
+      if (activeSeries) return post.series === activeSeries;
+      if (activeTag) return post.tags.includes(activeTag);
+      return true;
+    })
+    .filter((post) => !searchQuery.trim() || matchesQuery(post, searchQuery))
+    .sort((a, b) => {
+      // Sort by seriesOrder when a series is selected
+      if (activeSeries && a.seriesOrder && b.seriesOrder) {
+        return a.seriesOrder - b.seriesOrder;
+      }
+      return 0; // Keep original date-based order
+    });
 
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPosts.length;
@@ -31,7 +50,7 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
   // Reset visible count when filter changes
   useEffect(() => {
     setVisibleCount(POSTS_PER_PAGE);
-  }, [activeTag, searchQuery]);
+  }, [activeTag, activeSeries, searchQuery]);
 
   // Infinite scroll with IntersectionObserver
   const loadMore = useCallback(() => {
@@ -52,28 +71,37 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
     return () => observer.disconnect();
   }, [loadMore]);
 
+  const activeFilter = activeSeries || activeTag;
+
   const heading = searchQuery.trim()
-    ? activeTag
-      ? `${activeTag} — '${searchQuery}' 검색 결과`
+    ? activeFilter
+      ? `${activeFilter} — '${searchQuery}' 검색 결과`
       : `'${searchQuery}' 검색 결과`
-    : activeTag
-      ? activeTag
+    : activeFilter
+      ? activeFilter
       : "Latest";
 
   const subtitle =
-    activeTag || searchQuery.trim()
+    activeFilter || searchQuery.trim()
       ? `${filteredPosts.length}개의 포스트`
       : "";
 
   const emptyMessage = searchQuery.trim()
     ? "검색 결과가 없습니다."
-    : "해당 태그의 포스트가 없습니다.";
+    : "해당 포스트가 없습니다.";
 
   return (
     <div className="flex gap-0 lg:-mx-4">
       {/* Left Sidebar */}
       <Sidebar>
-        <TagNav tags={tags} activeTag={activeTag} onTagClick={setActiveTag} />
+        <TagNav
+          tags={tags}
+          series={series}
+          activeTag={activeTag}
+          activeSeries={activeSeries}
+          onTagClick={setActiveTag}
+          onSeriesClick={setActiveSeries}
+        />
       </Sidebar>
 
       {/* Main Content */}
@@ -86,6 +114,16 @@ export default function HomeContent({ posts, tags }: HomeContentProps) {
             {subtitle}
           </p>
         </div>
+
+        {/* Mobile filter bar */}
+        <MobileFilterBar
+          tags={tags}
+          series={series}
+          activeTag={activeTag}
+          activeSeries={activeSeries}
+          onTagClick={setActiveTag}
+          onSeriesClick={setActiveSeries}
+        />
 
         <SearchInput value={searchQuery} onChange={setSearchQuery} />
 

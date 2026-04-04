@@ -177,6 +177,16 @@ pre:hover .code-copy-btn {
   opacity: 0.85;
 }
 
+/* Hide scrollbar for mobile filter bar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Mermaid diagrams - hide raw code blocks */
 pre:has(> code.language-mermaid) {
   height: 0;

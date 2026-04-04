@@ -7,6 +7,7 @@ tags:
   - Grafana
   - 모니터링
   - 옵저버빌리티
+  - Prometheus & Grafana Series
 series: Prometheus & Grafana
 seriesOrder: 3
 ---
