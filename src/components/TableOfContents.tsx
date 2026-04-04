@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Dictionary } from "@/lib/i18n";
 
 interface Heading {
   id: string;
@@ -8,7 +9,11 @@ interface Heading {
   level: number;
 }
 
-export default function TableOfContents() {
+interface TableOfContentsProps {
+  dict: Dictionary;
+}
+
+export default function TableOfContents({ dict }: TableOfContentsProps) {
   const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeId, setActiveId] = useState<string>("");
 
@@ -61,7 +66,7 @@ export default function TableOfContents() {
   if (headings.length === 0) {
     return (
       <p className="text-xs text-gray-400 dark:text-gray-500">
-        목차가 없습니다.
+        {dict.post.noToc}
       </p>
     );
   }

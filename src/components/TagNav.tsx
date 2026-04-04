@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import type { Dictionary } from "@/lib/i18n";
 
 interface SeriesInfo {
   name: string;
@@ -15,6 +16,7 @@ interface TagNavProps {
   activeSeries: string | null;
   onTagClick: (tag: string | null) => void;
   onSeriesClick: (series: string | null) => void;
+  dict: Dictionary;
 }
 
 export default function TagNav({
@@ -24,6 +26,7 @@ export default function TagNav({
   activeSeries,
   onTagClick,
   onSeriesClick,
+  dict,
 }: TagNavProps) {
   const [seriesOpen, setSeriesOpen] = useState(true);
   const [tagsOpen, setTagsOpen] = useState(true);
@@ -99,7 +102,7 @@ export default function TagNav({
         <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
-        <span>전체</span>
+        <span>{dict.filter.all}</span>
       </button>
 
       {/* Series */}

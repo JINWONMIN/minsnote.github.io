@@ -1,7 +1,12 @@
 import Link from "next/link";
 import VisitorCounter from "./VisitorCounter";
+import type { Locale } from "@/lib/i18n";
 
-export default function Footer() {
+interface FooterProps {
+  locale: Locale;
+}
+
+export default function Footer({ locale }: FooterProps) {
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 mt-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
@@ -22,7 +27,7 @@ export default function Footer() {
           <VisitorCounter />
           <div className="text-sm text-gray-400 dark:text-gray-500">
             &copy; {new Date().getFullYear()}{" "}
-            <Link href="/" className="hover:text-primary-500 transition-colors">
+            <Link href={`/${locale}`} className="hover:text-primary-500 transition-colors">
               minsnote
             </Link>
             {" "}&middot; Built with Next.js

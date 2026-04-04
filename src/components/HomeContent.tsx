@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import PostCard from "./PostCard";
 import TagNav from "./TagNav";
 import Sidebar from "./Sidebar";
 import SearchInput from "./SearchInput";
 import MobileFilterBar from "./MobileFilterBar";
 import { matchesQuery } from "@/lib/searchPosts";
+import { getDictionary, type Locale } from "@/lib/i18n";
 import type { PostMeta } from "@/lib/posts";
 
 const POSTS_PER_PAGE = 5;
@@ -20,14 +22,38 @@ interface HomeContentProps {
   posts: PostMeta[];
   tags: [string, number][];
   series: SeriesInfo[];
+  locale: Locale;
 }
 
-export default function HomeContent({ posts, tags, series }: HomeContentProps) {
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-  const [activeSeries, setActiveSeries] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+export default function HomeContent({ posts, tags, series, locale }: HomeContentProps) {
+  const dict = getDictionary(locale);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [activeTag, setActiveTag] = useState<string | null>(searchParams.get("tag"));
+  const [activeSeries, setActiveSeries] = useState<string | null>(searchParams.get("series"));
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Sync filter state to URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (activeTag) params.set("tag", activeTag);
+    if (activeSeries) params.set("series", activeSeries);
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
+    const qs = params.toString();
+    const newUrl = qs ? `${pathname}?${qs}` : pathname;
+    router.replace(newUrl, { scroll: false });
+  }, [activeTag, activeSeries, searchQuery, pathname, router]);
+
+  // Sync from URL params when locale changes (e.g. language switch)
+  useEffect(() => {
+    setActiveTag(searchParams.get("tag"));
+    setActiveSeries(searchParams.get("series"));
+    setSearchQuery(searchParams.get("q") || "");
+  }, [searchParams]);
 
   const filteredPosts = posts
     .filter((post) => {
@@ -37,22 +63,19 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
     })
     .filter((post) => !searchQuery.trim() || matchesQuery(post, searchQuery))
     .sort((a, b) => {
-      // Sort by seriesOrder when a series is selected
       if (activeSeries && a.seriesOrder && b.seriesOrder) {
         return a.seriesOrder - b.seriesOrder;
       }
-      return 0; // Keep original date-based order
+      return 0;
     });
 
   const visiblePosts = filteredPosts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredPosts.length;
 
-  // Reset visible count when filter changes
   useEffect(() => {
     setVisibleCount(POSTS_PER_PAGE);
   }, [activeTag, activeSeries, searchQuery]);
 
-  // Infinite scroll with IntersectionObserver
   const loadMore = useCallback(() => {
     setVisibleCount((prev) => prev + POSTS_PER_PAGE);
   }, []);
@@ -75,20 +98,20 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
 
   const heading = searchQuery.trim()
     ? activeFilter
-      ? `${activeFilter} — '${searchQuery}' 검색 결과`
-      : `'${searchQuery}' 검색 결과`
+      ? `${activeFilter} — '${searchQuery}' ${dict.home.searchResults}`
+      : `'${searchQuery}' ${dict.home.searchResults}`
     : activeFilter
       ? activeFilter
-      : "Latest";
+      : dict.home.latest;
 
   const subtitle =
     activeFilter || searchQuery.trim()
-      ? `${filteredPosts.length}개의 포스트`
+      ? `${filteredPosts.length}${dict.home.postCount}`
       : "";
 
   const emptyMessage = searchQuery.trim()
-    ? "검색 결과가 없습니다."
-    : "해당 포스트가 없습니다.";
+    ? dict.home.noSearchResults
+    : dict.home.noPosts;
 
   return (
     <div className="flex gap-0 lg:-mx-4">
@@ -101,6 +124,7 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
           activeSeries={activeSeries}
           onTagClick={setActiveTag}
           onSeriesClick={setActiveSeries}
+          dict={dict}
         />
       </Sidebar>
 
@@ -123,6 +147,7 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
           activeSeries={activeSeries}
           onTagClick={setActiveTag}
           onSeriesClick={setActiveSeries}
+          dict={dict}
         />
 
         <SearchInput value={searchQuery} onChange={setSearchQuery} />
@@ -134,6 +159,7 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
                 key={post.slug}
                 post={post}
                 highlightQuery={searchQuery}
+                locale={locale}
               />
             ))
           ) : (
@@ -151,7 +177,7 @@ export default function HomeContent({ posts, tags, series }: HomeContentProps) {
                 onClick={loadMore}
                 className="rounded-lg border border-gray-300 dark:border-gray-700 px-6 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                Load more
+                {dict.home.loadMore}
               </button>
             </div>
           </>
