@@ -1,65 +1,82 @@
 # minsnote
 
+Personal tech blog built with Next.js and deployed on GitHub Pages.
+
 https://jinwonmin.github.io
 
-## 기술 스택
+## Features
 
-| 구분 | 기술 |
+**Core**
+- Markdown-based blog with tag filtering and series navigation
+- Post views, likes, visitor counter (Cloudflare Workers API)
+- Comments with password-based edit/delete and threaded replies
+- Browser-based writing via Sveltia CMS
+
+**UX**
+- Dark / Light mode toggle
+- Post search with Cmd+K shortcut and keyword highlight
+- Reading progress bar
+- Scroll to top button and infinite scroll
+- Image lightbox
+- Related posts recommendation (tag similarity)
+- Series navigation with floating arrows
+- Mermaid diagram rendering
+
+**SEO & Security**
+- Sitemap, RSS feed, robots.txt
+- Canonical URL, JSON-LD structured data
+- OpenGraph meta tags
+- Text copy protection (code blocks excluded)
+- API key authentication
+
+## Tech Stack
+
+| Category | Technology |
 | --- | --- |
 | Framework | Next.js (App Router, Static Export) |
 | Language | TypeScript |
 | Styling | Tailwind CSS + @tailwindcss/typography |
 | Markdown | remark + remark-gfm + rehype-highlight |
+| Diagrams | Mermaid |
 | CMS | Sveltia CMS |
 | API | Cloudflare Workers + KV + D1 ([minsnote-api](https://github.com/JINWONMIN/minsnote-api)) |
 | Hosting | GitHub Pages |
 | CI/CD | GitHub Actions |
 
-## 기능
-
-- 마크다운 기반 블로그 포스팅
-- 태그 분류 및 필터링
-- 포스트별 조회수, 사이트 방문자 카운터
-- 댓글 (비밀번호 기반 수정/삭제, 스레드 답글)
-- 코드 블록 Syntax Highlighting + 복사 버튼
-- 텍스트 복사 방지 (코드 블록 제외)
-- SEO (sitemap, RSS, robots.txt, canonical, JSON-LD)
-- Sveltia CMS로 브라우저에서 글 작성
-
-## 로컬 개발
+## Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
-http://localhost:3000 으로 접속.
+http://localhost:3000
 
-## 환경변수
+### Environment Variables
 
-`.env.example` 참고:
+See `.env.example`:
 
 ```
 NEXT_PUBLIC_API_KEY=your_api_key_here
 ```
 
-## 빌드
+### Build
 
 ```bash
 npm run build
 ```
 
-`next build` 후 sitemap.xml, rss.xml이 자동 생성됩니다.
+Generates static HTML, sitemap.xml, and rss.xml.
 
-## 프로젝트 구조
+## Project Structure
 
 ```
 ├── src/
 │   ├── app/              # Next.js App Router
-│   ├── components/       # UI 컴포넌트
-│   └── lib/              # 마크다운 파싱, API 클라이언트
-├── posts/                # 마크다운 포스트
-├── public/               # 정적 파일 (CMS, 검색엔진 인증)
-├── scripts/              # sitemap, RSS 생성 스크립트
-└── .github/workflows/    # GitHub Actions 배포
+│   ├── components/       # UI components
+│   └── lib/              # Markdown parsing, API client
+├── posts/                # Markdown posts
+├── public/               # Static files (CMS, search engine verification)
+├── scripts/              # Sitemap, RSS generation
+└── .github/workflows/    # GitHub Actions deploy
 ```
