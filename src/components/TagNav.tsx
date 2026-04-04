@@ -29,6 +29,7 @@ export default function TagNav({
   const [tagsOpen, setTagsOpen] = useState(true);
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null);
   const navRef = useRef<HTMLElement>(null);
+  const tooltipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const nav = navRef.current;
@@ -38,17 +39,23 @@ export default function TagNav({
       const el = e.target as HTMLElement;
       if (!el.classList.contains("truncate")) return;
       if (el.scrollWidth <= el.clientWidth) return;
-      const rect = el.getBoundingClientRect();
-      setTooltip({
-        text: el.textContent || "",
-        x: rect.left + rect.width / 2,
-        y: rect.top - 6,
-      });
+      if (tooltipTimer.current) clearTimeout(tooltipTimer.current);
+      tooltipTimer.current = setTimeout(() => {
+        const rect = el.getBoundingClientRect();
+        setTooltip({
+          text: el.textContent || "",
+          x: rect.left + rect.width / 2,
+          y: rect.top - 6,
+        });
+      }, 300);
     }
 
     function handleMouseLeave(e: MouseEvent) {
       const el = e.target as HTMLElement;
-      if (el.classList.contains("truncate")) setTooltip(null);
+      if (el.classList.contains("truncate")) {
+        if (tooltipTimer.current) clearTimeout(tooltipTimer.current);
+        setTooltip(null);
+      }
     }
 
     nav.addEventListener("mouseenter", handleMouseEnter, true);
@@ -56,6 +63,7 @@ export default function TagNav({
     return () => {
       nav.removeEventListener("mouseenter", handleMouseEnter, true);
       nav.removeEventListener("mouseleave", handleMouseLeave, true);
+      if (tooltipTimer.current) clearTimeout(tooltipTimer.current);
     };
   }, []);
 
