@@ -6,7 +6,6 @@ tags:
   - Cloudflare Workers
   - API
   - 보안
-  - Blog Series
 series: 블로그 개발기
 seriesOrder: 3
 ---
