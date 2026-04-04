@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export default function ProfileCard() {
+interface ProfileCardProps {
+  locale?: string;
+}
+
+export default function ProfileCard({ locale = "ko" }: ProfileCardProps) {
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -20,7 +24,7 @@ export default function ProfileCard() {
         </div>
         <div className="min-w-0">
           <Link
-            href="/about"
+            href={`/${locale}/about`}
             className="font-bold text-sm text-gray-900 dark:text-gray-100 hover:text-primary-500 transition-colors"
           >
             minsnote
