@@ -1,13 +1,21 @@
 import { getAllPostMetas } from "@/lib/posts";
 import Link from "next/link";
+import { getDictionary, type Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
+
+interface Props {
+  params: Promise<{ locale: string }>;
+}
 
 export const metadata: Metadata = {
   title: "Tags",
 };
 
-export default function TagsPage() {
-  const posts = getAllPostMetas();
+export default async function TagsPage({ params }: Props) {
+  const { locale } = await params;
+  const loc = locale as Locale;
+  const dict = getDictionary(loc);
+  const posts = getAllPostMetas(loc);
 
   const tagCounts: Record<string, number> = {};
   posts.forEach((post) => {
@@ -22,7 +30,7 @@ export default function TagsPage() {
     <div>
       <div className="space-y-2 pb-8 pt-6">
         <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl md:text-5xl">
-          Tags
+          {dict.tags.title}
         </h1>
       </div>
 
@@ -30,7 +38,7 @@ export default function TagsPage() {
         {sortedTags.map(([tag, count]) => (
           <Link
             key={tag}
-            href={`/tags/${encodeURIComponent(tag)}`}
+            href={`/${locale}/tags/${encodeURIComponent(tag)}`}
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
           >
             {tag}
@@ -43,7 +51,7 @@ export default function TagsPage() {
 
       {sortedTags.length === 0 && (
         <p className="py-12 text-center text-gray-500 dark:text-gray-400">
-          아직 태그가 없습니다.
+          {dict.tags.noTags}
         </p>
       )}
     </div>

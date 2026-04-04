@@ -8,17 +8,18 @@ import {
   editComment,
   type Comment,
 } from "@/lib/api";
+import { getDictionary, type Locale, type Dictionary } from "@/lib/i18n";
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, dict: Dictionary["comments"]): string {
   const now = Date.now();
   const then = new Date(dateStr + "Z").getTime();
   const diff = Math.floor((now - then) / 1000);
 
-  if (diff < 60) return "방금 전";
-  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
-  if (diff < 2592000) return `${Math.floor(diff / 86400)}일 전`;
-  return new Date(dateStr).toLocaleDateString("ko-KR");
+  if (diff < 60) return dict.justNow;
+  if (diff < 3600) return `${Math.floor(diff / 60)}${dict.minutesAgo}`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}${dict.hoursAgo}`;
+  if (diff < 2592000) return `${Math.floor(diff / 86400)}${dict.daysAgo}`;
+  return new Date(dateStr).toLocaleDateString();
 }
 
 function CommentForm({
@@ -27,12 +28,14 @@ function CommentForm({
   onSuccess,
   onCancel,
   compact,
+  dict,
 }: {
   slug: string;
   parentId?: number | null;
   onSuccess: () => void;
   onCancel?: () => void;
   compact?: boolean;
+  dict: Dictionary["comments"];
 }) {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +49,7 @@ function CommentForm({
     setSubmitting(true);
 
     const result = await postComment(slug, nickname, content, password, parentId).catch(
-      () => ({ success: false, error: "네트워크 오류가 발생했습니다." })
+      () => ({ success: false, error: dict.networkError })
     );
 
     if (result.success) {
@@ -54,7 +57,7 @@ function CommentForm({
       setPassword("");
       onSuccess();
     } else {
-      setError(result.error || "댓글 작성에 실패했습니다.");
+      setError(result.error || dict.submitError);
     }
     setSubmitting(false);
   }
@@ -64,7 +67,7 @@ function CommentForm({
       <div className="flex gap-2">
         <input
           type="text"
-          placeholder="닉네임"
+          placeholder={dict.nickname}
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           maxLength={30}
@@ -74,7 +77,7 @@ function CommentForm({
         <input
           type="password"
           inputMode="numeric"
-          placeholder="비밀번호 4자리"
+          placeholder={dict.password}
           value={password}
           onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
           maxLength={4}
@@ -83,7 +86,7 @@ function CommentForm({
         />
       </div>
       <textarea
-        placeholder={parentId ? "답글을 남겨주세요" : "댓글을 남겨주세요"}
+        placeholder={parentId ? dict.replyPlaceholder : dict.commentPlaceholder}
         value={content}
         onChange={(e) => setContent(e.target.value)}
         maxLength={2000}
@@ -98,7 +101,7 @@ function CommentForm({
           disabled={submitting || password.length !== 4}
           className="px-3 py-1.5 text-sm font-medium rounded-lg bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {submitting ? "등록 중..." : parentId ? "답글 등록" : "댓글 등록"}
+          {submitting ? dict.submitting : parentId ? dict.submitReply : dict.submit}
         </button>
         {onCancel && (
           <button
@@ -106,7 +109,7 @@ function CommentForm({
             onClick={onCancel}
             className="px-3 py-1.5 text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
-            취소
+            {dict.cancel}
           </button>
         )}
       </div>
@@ -119,11 +122,13 @@ function CommentItem({
   slug,
   replies,
   onRefresh,
+  dict,
 }: {
   comment: Comment;
   slug: string;
   replies: Comment[];
   onRefresh: () => void;
+  dict: Dictionary["comments"];
 }) {
   const [mode, setMode] = useState<"view" | "edit" | "delete" | "reply">("view");
   const [password, setPassword] = useState("");
@@ -144,13 +149,13 @@ function CommentItem({
     setLoading(true);
     const result = await deleteComment(comment.id, password).catch(() => ({
       success: false,
-      error: "네트워크 오류가 발생했습니다.",
+      error: dict.networkError,
     }));
     setLoading(false);
     if (result.success) {
       onRefresh();
     } else {
-      setError(result.error || "삭제에 실패했습니다.");
+      setError(result.error || dict.deleteError);
     }
   }
 
@@ -158,14 +163,14 @@ function CommentItem({
     setError("");
     setLoading(true);
     const result = await editComment(comment.id, editContent, password).catch(
-      () => ({ success: false, error: "네트워크 오류가 발생했습니다." })
+      () => ({ success: false, error: dict.networkError })
     );
     setLoading(false);
     if (result.success) {
       reset();
       onRefresh();
     } else {
-      setError(result.error || "수정에 실패했습니다.");
+      setError(result.error || dict.editError);
     }
   }
 
@@ -183,7 +188,7 @@ function CommentItem({
               {comment.nickname}
             </span>
             <span className="text-xs text-gray-400 dark:text-gray-500">
-              {timeAgo(comment.created_at)}
+              {timeAgo(comment.created_at, dict)}
             </span>
           </div>
           {mode === "view" && (
@@ -194,7 +199,7 @@ function CommentItem({
                     onClick={() => setMode("reply")}
                     className="text-xs text-gray-400 hover:text-primary-500 transition-colors"
                   >
-                    답글
+                    {dict.reply}
                   </button>
                   <span className="text-xs text-gray-300 dark:text-gray-700">|</span>
                 </>
@@ -203,14 +208,14 @@ function CommentItem({
                 onClick={() => setMode("edit")}
                 className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                수정
+                {dict.edit}
               </button>
               <span className="text-xs text-gray-300 dark:text-gray-700">|</span>
               <button
                 onClick={() => setMode("delete")}
                 className="text-xs text-gray-400 hover:text-red-500 transition-colors"
               >
-                삭제
+                {dict.delete}
               </button>
             </div>
           )}
@@ -232,7 +237,7 @@ function CommentItem({
                 type="password"
                 inputMode="numeric"
                 maxLength={4}
-                placeholder="비밀번호 4자리"
+                placeholder={dict.password}
                 value={password}
                 onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
                 className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -242,13 +247,13 @@ function CommentItem({
                 disabled={password.length !== 4 || loading}
                 className="px-2 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? "..." : "삭제"}
+                {loading ? "..." : dict.delete}
               </button>
               <button
                 onClick={reset}
                 className="px-2 py-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                취소
+                {dict.cancel}
               </button>
             </div>
             {error && <p className="text-xs text-red-500">{error}</p>}
@@ -269,7 +274,7 @@ function CommentItem({
                 type="password"
                 inputMode="numeric"
                 maxLength={4}
-                placeholder="비밀번호 4자리"
+                placeholder={dict.password}
                 value={password}
                 onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
                 className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
@@ -279,13 +284,13 @@ function CommentItem({
                 disabled={password.length !== 4 || !editContent.trim() || loading}
                 className="px-2 py-1 text-xs font-medium rounded bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
-                {loading ? "..." : "수정"}
+                {loading ? "..." : dict.edit}
               </button>
               <button
                 onClick={reset}
                 className="px-2 py-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
-                취소
+                {dict.cancel}
               </button>
             </div>
             {error && <p className="text-xs text-red-500">{error}</p>}
@@ -305,6 +310,7 @@ function CommentItem({
               onRefresh();
             }}
             onCancel={reset}
+            dict={dict}
           />
         </div>
       )}
@@ -319,6 +325,7 @@ function CommentItem({
               slug={slug}
               replies={[]}
               onRefresh={onRefresh}
+              dict={dict}
             />
           ))}
         </div>
@@ -327,7 +334,8 @@ function CommentItem({
   );
 }
 
-export default function Comments({ slug }: { slug: string }) {
+export default function Comments({ slug, locale }: { slug: string; locale: Locale }) {
+  const dict = getDictionary(locale);
   const [comments, setComments] = useState<Comment[]>([]);
 
   function refresh() {
@@ -352,7 +360,7 @@ export default function Comments({ slug }: { slug: string }) {
   return (
     <section className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
       <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-        댓글{" "}
+        {dict.comments.title}{" "}
         {totalCount > 0 && (
           <span className="text-sm font-normal text-gray-400">
             ({totalCount})
@@ -369,12 +377,13 @@ export default function Comments({ slug }: { slug: string }) {
               slug={slug}
               replies={repliesByParent[comment.id] || []}
               onRefresh={refresh}
+              dict={dict.comments}
             />
           ))}
         </div>
       )}
 
-      <CommentForm slug={slug} onSuccess={refresh} />
+      <CommentForm slug={slug} onSuccess={refresh} dict={dict.comments} />
     </section>
   );
 }

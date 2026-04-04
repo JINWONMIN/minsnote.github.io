@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Dictionary } from "@/lib/i18n";
 
 interface SeriesInfo {
   name: string;
@@ -14,6 +15,7 @@ interface MobileFilterBarProps {
   activeSeries: string | null;
   onTagClick: (tag: string | null) => void;
   onSeriesClick: (series: string | null) => void;
+  dict: Dictionary;
 }
 
 type Tab = "all" | "series" | "tags";
@@ -25,6 +27,7 @@ export default function MobileFilterBar({
   activeSeries,
   onTagClick,
   onSeriesClick,
+  dict,
 }: MobileFilterBarProps) {
   const [tab, setTab] = useState<Tab>("all");
 
@@ -68,7 +71,7 @@ export default function MobileFilterBar({
           onClick={() => handleTabClick("all")}
           className={`${tabBase} ${tab === "all" ? tabActive : tabInactive}`}
         >
-          전체
+          {dict.filter.all}
         </button>
         <button
           onClick={() => handleTabClick("series")}

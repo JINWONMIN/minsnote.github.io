@@ -1,0 +1,16 @@
+{
+  "koToEn": {
+    "보안": "Security",
+    "블로그 개발기": "Blog Dev Story",
+    "서버리스": "Serverless",
+    "모니터링": "Monitoring",
+    "옵저버빌리티": "Observability"
+  },
+  "enToKo": {
+    "Security": "보안",
+    "Blog Dev Story": "블로그 개발기",
+    "Serverless": "서버리스",
+    "Monitoring": "모니터링",
+    "Observability": "옵저버빌리티"
+  }
+}

@@ -1,17 +1,50 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import { type Locale, translateTerm } from "@/lib/i18n";
 
-const navLinks = [
-  { href: "/", label: "Blog" },
-  { href: "/tags", label: "Tags" },
-  { href: "/about", label: "About" },
-];
+interface HeaderProps {
+  locale: Locale;
+}
 
-export default function Header() {
+export default function Header({ locale }: HeaderProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const navLinks = [
+    { href: `/${locale}/tags`, label: "Tags" },
+    { href: `/${locale}/about`, label: "About" },
+  ];
+
+  function switchLocalePath(targetLocale: Locale): string {
+    // Tag detail pages: translate tag name in URL
+    const tagMatch = pathname.match(/^\/[a-z]{2}\/tags\/(.+)/);
+    if (tagMatch) {
+      const tag = decodeURIComponent(tagMatch[1]);
+      const translated = translateTerm(tag, locale, targetLocale);
+      return `/${targetLocale}/tags/${encodeURIComponent(translated)}`;
+    }
+
+    const newPath = pathname.replace(`/${locale}`, `/${targetLocale}`) || `/${targetLocale}`;
+
+    // Translate filter params (tag/series names may differ)
+    const params = new URLSearchParams();
+    const tag = searchParams.get("tag");
+    const series = searchParams.get("series");
+    const q = searchParams.get("q");
+    if (tag) params.set("tag", translateTerm(tag, locale, targetLocale));
+    if (series) params.set("series", translateTerm(series, locale, targetLocale));
+    if (q) params.set("q", q);
+    const qs = params.toString();
+    return qs ? `${newPath}?${qs}` : newPath;
+  }
+
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href={`/${locale}`} className="flex items-center gap-2 group">
           <svg
             className="h-7 w-7 text-primary-500"
             viewBox="0 0 24 24"
@@ -34,6 +67,19 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+
+          {/* Language Switcher */}
+          <button
+            onClick={() => {
+              sessionStorage.setItem("__locale_scroll", String(window.scrollY));
+              const target = switchLocalePath(locale === "ko" ? "en" : "ko");
+              window.location.href = target;
+            }}
+            className="text-xs font-medium px-2 py-1 rounded-md border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-primary-500 hover:border-primary-500 dark:hover:text-primary-400 dark:hover:border-primary-400 transition-colors cursor-pointer"
+          >
+            {locale === "ko" ? "EN" : "KO"}
+          </button>
+
           <ThemeToggle />
           <a
             href="https://github.com/JINWONMIN"

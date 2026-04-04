@@ -1,17 +1,19 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/formatDate";
 import type { PostMeta } from "@/lib/posts";
+import type { Locale, Dictionary } from "@/lib/i18n";
 
 interface RecentPostsProps {
   posts: PostMeta[];
   currentSlug: string;
   currentTags?: string[];
+  locale: Locale;
+  dict: Dictionary;
 }
 
-export default function RecentPosts({ posts, currentSlug, currentTags = [] }: RecentPostsProps) {
+export default function RecentPosts({ posts, currentSlug, currentTags = [], locale, dict }: RecentPostsProps) {
   const otherPosts = posts.filter((post) => post.slug !== currentSlug);
 
-  // Sort by tag similarity, then by date
   const relatedPosts = otherPosts
     .map((post) => ({
       ...post,
@@ -27,20 +29,20 @@ export default function RecentPosts({ posts, currentSlug, currentTags = [] }: Re
   return (
     <div className="border-t border-gray-200 dark:border-gray-800 mt-16 pt-10">
       <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-        {hasRelated ? "관련 글" : "다른 글 읽기"}
+        {hasRelated ? dict.post.relatedPosts : dict.post.otherPosts}
       </h2>
       <div className="grid gap-6 sm:grid-cols-2">
         {relatedPosts.map((post) => (
           <Link
             key={post.slug}
-            href={`/posts/${post.slug}`}
+            href={`/${locale}/posts/${post.slug}`}
             className="group rounded-2xl border border-gray-200 dark:border-gray-800 p-5 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
           >
             <time
               dateTime={post.date}
               className="text-xs text-gray-500 dark:text-gray-400"
             >
-              {formatDate(post.date)}
+              {formatDate(post.date, locale)}
             </time>
             <h3 className="mt-2 font-bold text-gray-900 dark:text-gray-100 group-hover:text-primary-500 transition-colors line-clamp-2">
               {post.title}

@@ -21,10 +21,10 @@ export default function AboutPage() {
           {/* Bio */}
           <div className="prose prose-gray dark:prose-invert max-w-none flex-1">
             <p>
-              
+
             </p>
             <p>
-              
+
             </p>
           </div>
         </div>
