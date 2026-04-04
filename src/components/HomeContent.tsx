@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import PostCard from "./PostCard";
 import TagNav from "./TagNav";
 import Sidebar from "./Sidebar";
@@ -28,7 +28,6 @@ interface HomeContentProps {
 export default function HomeContent({ posts, tags, series, locale }: HomeContentProps) {
   const dict = getDictionary(locale);
   const searchParams = useSearchParams();
-  const router = useRouter();
   const pathname = usePathname();
 
   const [activeTag, setActiveTag] = useState<string | null>(searchParams.get("tag"));
@@ -36,32 +35,19 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const loaderRef = useRef<HTMLDivElement>(null);
-  const isInternalUpdate = useRef(false);
 
-  // Sync filter state to URL
+  // Sync filter state to URL (directly update browser URL)
   useEffect(() => {
     const params = new URLSearchParams();
     if (activeTag) params.set("tag", activeTag);
     if (activeSeries) params.set("series", activeSeries);
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
     const qs = params.toString();
-    const currentQs = searchParams.toString();
-    if (qs === currentQs) {
-      isInternalUpdate.current = false;
-      return;
-    }
-    isInternalUpdate.current = true;
+    const currentQs = window.location.search.replace(/^\?/, "");
+    if (qs === currentQs) return;
     const newUrl = qs ? `${pathname}?${qs}` : pathname;
-    router.replace(newUrl, { scroll: false });
-  }, [activeTag, activeSeries, searchQuery, pathname, router, searchParams]);
-
-  // Sync from URL params (only for external changes like language switch)
-  useEffect(() => {
-    if (isInternalUpdate.current) return;
-    setActiveTag(searchParams.get("tag"));
-    setActiveSeries(searchParams.get("series"));
-    setSearchQuery(searchParams.get("q") || "");
-  }, [searchParams]);
+    window.history.replaceState(null, "", newUrl);
+  }, [activeTag, activeSeries, searchQuery, pathname]);
 
   const filteredPosts = posts
     .filter((post) => {
