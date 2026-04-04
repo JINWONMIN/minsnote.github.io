@@ -49,6 +49,14 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
     window.history.replaceState(null, "", newUrl);
   }, [activeTag, activeSeries, searchQuery, pathname]);
 
+  // Sync from URL to state (for Link navigation, e.g. logo click)
+  // Safe: history.replaceState doesn't trigger searchParams, only Link does
+  useEffect(() => {
+    setActiveTag(searchParams.get("tag"));
+    setActiveSeries(searchParams.get("series"));
+    setSearchQuery(searchParams.get("q") || "");
+  }, [searchParams]);
+
   const filteredPosts = posts
     .filter((post) => {
       if (activeSeries) return post.series === activeSeries;
@@ -110,7 +118,7 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
   return (
     <div className="flex gap-0 lg:-mx-4">
       {/* Left Sidebar */}
-      <Sidebar>
+      <Sidebar locale={locale}>
         <TagNav
           tags={tags}
           series={series}
