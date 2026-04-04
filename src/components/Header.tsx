@@ -29,11 +29,12 @@ export default function Header({ locale }: HeaderProps) {
 
     const newPath = pathname.replace(`/${locale}`, `/${targetLocale}`) || `/${targetLocale}`;
 
-    // Translate filter params (tag/series names may differ)
+    // Read from actual browser URL (useSearchParams can be stale after replaceState)
+    const currentParams = new URLSearchParams(window.location.search);
     const params = new URLSearchParams();
-    const tag = searchParams.get("tag");
-    const series = searchParams.get("series");
-    const q = searchParams.get("q");
+    const tag = currentParams.get("tag");
+    const series = currentParams.get("series");
+    const q = currentParams.get("q");
     if (tag) params.set("tag", translateTerm(tag, locale, targetLocale));
     if (series) params.set("series", translateTerm(series, locale, targetLocale));
     if (q) params.set("q", q);
