@@ -19,7 +19,6 @@ export default function Home() {
   const tagCounts: Record<string, number> = {};
   posts.forEach((post) => {
     post.tags.forEach((tag) => {
-      if (tag.endsWith("Series")) return;
       tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
   });
