@@ -29,7 +29,9 @@ export default function MobileFilterBar({
   onSeriesClick,
   dict,
 }: MobileFilterBarProps) {
-  const [tab, setTab] = useState<Tab>("all");
+  const [tab, setTab] = useState<Tab>(
+    activeSeries ? "series" : activeTag ? "tags" : "all"
+  );
 
   function handleTabClick(t: Tab) {
     if (t === "all") {
