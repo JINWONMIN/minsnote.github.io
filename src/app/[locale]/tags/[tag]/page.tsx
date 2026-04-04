@@ -15,7 +15,11 @@ export async function generateStaticParams() {
     const tags = new Set<string>();
     posts.forEach((post) => post.tags.forEach((tag) => tags.add(tag)));
     for (const tag of tags) {
-      params.push({ locale, tag: encodeURIComponent(tag) });
+      const encoded = encodeURIComponent(tag);
+      params.push({ locale, tag: encoded });
+      if (encoded !== tag) {
+        params.push({ locale, tag });
+      }
     }
   }
   return params;
