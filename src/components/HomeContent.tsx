@@ -36,8 +36,9 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const isInternalUpdate = useRef(false);
 
-  // Sync filter state to URL (skip if already matching)
+  // Sync filter state to URL
   useEffect(() => {
     const params = new URLSearchParams();
     if (activeTag) params.set("tag", activeTag);
@@ -46,19 +47,21 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
     const qs = params.toString();
     const currentQs = searchParams.toString();
     if (qs === currentQs) return;
+    isInternalUpdate.current = true;
     const newUrl = qs ? `${pathname}?${qs}` : pathname;
     router.replace(newUrl, { scroll: false });
   }, [activeTag, activeSeries, searchQuery, pathname, router, searchParams]);
 
-  // Sync from URL params when locale changes (e.g. language switch)
+  // Sync from URL params (only for external changes like language switch)
   useEffect(() => {
-    const tag = searchParams.get("tag");
-    const s = searchParams.get("series");
-    const q = searchParams.get("q") || "";
-    if (tag !== activeTag) setActiveTag(tag);
-    if (s !== activeSeries) setActiveSeries(s);
-    if (q !== searchQuery) setSearchQuery(q);
-  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (isInternalUpdate.current) {
+      isInternalUpdate.current = false;
+      return;
+    }
+    setActiveTag(searchParams.get("tag"));
+    setActiveSeries(searchParams.get("series"));
+    setSearchQuery(searchParams.get("q") || "");
+  }, [searchParams]);
 
   const filteredPosts = posts
     .filter((post) => {
