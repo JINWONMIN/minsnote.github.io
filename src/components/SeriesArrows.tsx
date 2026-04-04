@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { PostMeta } from "@/lib/posts";
+import type { Locale } from "@/lib/i18n";
 
 interface SeriesArrowsProps {
   series: string;
   currentSlug: string;
   posts: PostMeta[];
+  locale: Locale;
 }
 
-export default function SeriesArrows({ series, currentSlug, posts }: SeriesArrowsProps) {
+export default function SeriesArrows({ series, currentSlug, posts, locale }: SeriesArrowsProps) {
   const [touched, setTouched] = useState<"prev" | "next" | null>(null);
 
   const seriesPosts = posts
@@ -32,7 +34,7 @@ export default function SeriesArrows({ series, currentSlug, posts }: SeriesArrow
     <>
       {prev && (
         <Link
-          href={`/posts/${prev.slug}`}
+          href={`/${locale}/posts/${prev.slug}`}
           onTouchStart={() => handleTouch("prev")}
           className="fixed left-2 top-1/2 -translate-y-1/2 z-40 hidden lg:flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity duration-200"
         >
@@ -46,7 +48,7 @@ export default function SeriesArrows({ series, currentSlug, posts }: SeriesArrow
       )}
       {next && (
         <Link
-          href={`/posts/${next.slug}`}
+          href={`/${locale}/posts/${next.slug}`}
           onTouchStart={() => handleTouch("next")}
           className="fixed right-2 top-1/2 -translate-y-1/2 z-40 hidden lg:flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity duration-200"
         >
@@ -63,7 +65,7 @@ export default function SeriesArrows({ series, currentSlug, posts }: SeriesArrow
       <div className="fixed bottom-0 left-0 right-0 z-40 flex border-t border-gray-200 bg-white/90 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/90 lg:hidden">
         {prev ? (
           <Link
-            href={`/posts/${prev.slug}`}
+            href={`/${locale}/posts/${prev.slug}`}
             className="flex-1 flex items-center gap-2 px-4 py-3 text-gray-600 dark:text-gray-300 active:bg-gray-100 dark:active:bg-gray-800 transition-colors"
           >
             <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -76,7 +78,7 @@ export default function SeriesArrows({ series, currentSlug, posts }: SeriesArrow
         )}
         {next ? (
           <Link
-            href={`/posts/${next.slug}`}
+            href={`/${locale}/posts/${next.slug}`}
             className="flex-1 flex items-center justify-end gap-2 px-4 py-3 text-gray-600 dark:text-gray-300 active:bg-gray-100 dark:active:bg-gray-800 transition-colors border-l border-gray-200 dark:border-gray-800"
           >
             <span className="text-xs line-clamp-1">{next.title}</span>

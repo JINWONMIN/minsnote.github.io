@@ -1,0 +1,71 @@
+{
+  "site": {
+    "description": "Dev notes and random musings ~~",
+    "locale": "en_US"
+  },
+  "nav": {
+    "blog": "Blog",
+    "tags": "Tags",
+    "about": "About"
+  },
+  "home": {
+    "latest": "Latest",
+    "searchResults": "Search results",
+    "postCount": " posts",
+    "noSearchResults": "No results found.",
+    "noPosts": "No posts found.",
+    "loadMore": "Load more"
+  },
+  "filter": {
+    "all": "All"
+  },
+  "post": {
+    "onThisPage": "On this page",
+    "backToBlog": "Back to blog",
+    "noToc": "No table of contents.",
+    "relatedPosts": "Related posts",
+    "otherPosts": "More to read",
+    "showFullList": "View full list",
+    "prev": "← Prev",
+    "next": "Next →",
+    "readMore": "Read more"
+  },
+  "tags": {
+    "title": "Tags",
+    "noTags": "No tags yet.",
+    "tagPrefix": "Tag: ",
+    "allTags": "← All tags"
+  },
+  "comments": {
+    "title": "Comments",
+    "nickname": "Nickname",
+    "password": "4-digit password",
+    "commentPlaceholder": "Leave a comment",
+    "replyPlaceholder": "Write a reply",
+    "submit": "Post comment",
+    "submitReply": "Post reply",
+    "submitting": "Posting...",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "reply": "Reply",
+    "justNow": "Just now",
+    "minutesAgo": "m ago",
+    "hoursAgo": "h ago",
+    "daysAgo": "d ago",
+    "networkError": "A network error occurred.",
+    "submitError": "Failed to post comment.",
+    "deleteError": "Failed to delete.",
+    "editError": "Failed to edit."
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "footer": {
+    "builtWith": "Built with Next.js"
+  },
+  "visitor": {
+    "today": "TODAY",
+    "total": "TOTAL"
+  }
+}

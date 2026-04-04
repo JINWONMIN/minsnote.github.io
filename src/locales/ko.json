@@ -1,0 +1,71 @@
+{
+  "site": {
+    "description": "이모저모 주저리주저리 ~~",
+    "locale": "ko_KR"
+  },
+  "nav": {
+    "blog": "Blog",
+    "tags": "Tags",
+    "about": "About"
+  },
+  "home": {
+    "latest": "Latest",
+    "searchResults": "검색 결과",
+    "postCount": "개의 포스트",
+    "noSearchResults": "검색 결과가 없습니다.",
+    "noPosts": "해당 포스트가 없습니다.",
+    "loadMore": "Load more"
+  },
+  "filter": {
+    "all": "전체"
+  },
+  "post": {
+    "onThisPage": "On this page",
+    "backToBlog": "Back to blog",
+    "noToc": "목차가 없습니다.",
+    "relatedPosts": "관련 글",
+    "otherPosts": "다른 글 읽기",
+    "showFullList": "전체 목록 보기",
+    "prev": "← Prev",
+    "next": "Next →",
+    "readMore": "Read more"
+  },
+  "tags": {
+    "title": "Tags",
+    "noTags": "아직 태그가 없습니다.",
+    "tagPrefix": "Tag: ",
+    "allTags": "← All tags"
+  },
+  "comments": {
+    "title": "댓글",
+    "nickname": "닉네임",
+    "password": "비밀번호 4자리",
+    "commentPlaceholder": "댓글을 남겨주세요",
+    "replyPlaceholder": "답글을 남겨주세요",
+    "submit": "댓글 등록",
+    "submitReply": "답글 등록",
+    "submitting": "등록 중...",
+    "cancel": "취소",
+    "edit": "수정",
+    "delete": "삭제",
+    "reply": "답글",
+    "justNow": "방금 전",
+    "minutesAgo": "분 전",
+    "hoursAgo": "시간 전",
+    "daysAgo": "일 전",
+    "networkError": "네트워크 오류가 발생했습니다.",
+    "submitError": "댓글 작성에 실패했습니다.",
+    "deleteError": "삭제에 실패했습니다.",
+    "editError": "수정에 실패했습니다."
+  },
+  "search": {
+    "placeholder": "Search..."
+  },
+  "footer": {
+    "builtWith": "Built with Next.js"
+  },
+  "visitor": {
+    "today": "TODAY",
+    "total": "TOTAL"
+  }
+}

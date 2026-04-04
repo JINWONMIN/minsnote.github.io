@@ -4,49 +4,67 @@ import matter from "gray-matter";
 
 const BASE_URL = "https://jinwonmin.github.io";
 const SITE_TITLE = "minsnote";
-const SITE_DESCRIPTION = "이모저모 주저리주저리 ~~";
-const postsDir = path.join(process.cwd(), "posts");
+
+const localeConfig = {
+  ko: { description: "이모저모 주저리주저리 ~~", language: "ko" },
+  en: { description: "Dev notes and random musings ~~", language: "en" },
+};
+
 const outDir = path.join(process.cwd(), "out");
 
-const files = fs.readdirSync(postsDir).filter((f) => f.endsWith(".md"));
+for (const [locale, config] of Object.entries(localeConfig)) {
+  const postsDir = path.join(process.cwd(), "posts", locale);
+  if (!fs.existsSync(postsDir)) {
+    console.log(`RSS skipped for ${locale}: no posts directory`);
+    continue;
+  }
 
-const posts = files
-  .map((file) => {
-    const content = fs.readFileSync(path.join(postsDir, file), "utf8");
-    const { data } = matter(content);
-    return {
-      slug: file.replace(/\.md$/, ""),
-      title: data.title,
-      date: new Date(data.date).toUTCString(),
-      description: data.description || "",
-    };
-  })
-  .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const files = fs.readdirSync(postsDir).filter((f) => f.endsWith(".md"));
 
-const items = posts
-  .map(
-    (p) => `    <item>
+  const posts = files
+    .map((file) => {
+      const content = fs.readFileSync(path.join(postsDir, file), "utf8");
+      const { data } = matter(content);
+      return {
+        slug: file.replace(/\.md$/, ""),
+        title: data.title,
+        date: new Date(data.date).toUTCString(),
+        description: data.description || "",
+      };
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  const items = posts
+    .map(
+      (p) => `    <item>
       <title><![CDATA[${p.title}]]></title>
-      <link>${BASE_URL}/posts/${p.slug}</link>
-      <guid>${BASE_URL}/posts/${p.slug}</guid>
+      <link>${BASE_URL}/${locale}/posts/${p.slug}</link>
+      <guid>${BASE_URL}/${locale}/posts/${p.slug}</guid>
       <pubDate>${p.date}</pubDate>
       <description><![CDATA[${p.description}]]></description>
     </item>`
-  )
-  .join("\n");
+    )
+    .join("\n");
 
-const rss = `<?xml version="1.0" encoding="UTF-8"?>
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${SITE_TITLE}</title>
-    <link>${BASE_URL}</link>
-    <description>${SITE_DESCRIPTION}</description>
-    <language>ko</language>
+    <link>${BASE_URL}/${locale}</link>
+    <description>${config.description}</description>
+    <language>${config.language}</language>
     <lastBuildDate>${posts[0]?.date || new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${BASE_URL}/${locale}/rss.xml" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;
 
-fs.writeFileSync(path.join(outDir, "rss.xml"), rss);
-console.log(`RSS generated: ${posts.length} items`);
+  // Ensure locale output directory exists
+  const localeOutDir = path.join(outDir, locale);
+  if (!fs.existsSync(localeOutDir)) {
+    fs.mkdirSync(localeOutDir, { recursive: true });
+  }
+
+  fs.writeFileSync(path.join(localeOutDir, "rss.xml"), rss);
+  console.log(`RSS generated for ${locale}: ${posts.length} items`);
+}

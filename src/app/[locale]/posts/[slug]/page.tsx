@@ -13,26 +13,37 @@ import ImageLightbox from "@/components/ImageLightbox";
 import MermaidRenderer from "@/components/MermaidRenderer";
 import SeriesNav from "@/components/SeriesNav";
 import SeriesArrows from "@/components/SeriesArrows";
+import { getDictionary, locales, type Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
 interface Props {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const slugs = getAllPostSlugs();
-  return slugs.map((slug) => ({ slug }));
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of locales) {
+    const slugs = getAllPostSlugs(locale);
+    for (const slug of slugs) {
+      params.push({ locale, slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
-  const url = `https://jinwonmin.github.io/posts/${slug}`;
+  const { locale, slug } = await params;
+  const post = await getPostBySlug(slug, locale as Locale);
+  const url = `https://jinwonmin.github.io/${locale}/posts/${slug}`;
   return {
     title: post.title,
     description: post.description,
     alternates: {
       canonical: url,
+      languages: {
+        ko: `/ko/posts/${slug}`,
+        en: `/en/posts/${slug}`,
+      },
     },
     openGraph: {
       title: post.title,
@@ -46,9 +57,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
-  const allPosts = getAllPostMetas();
+  const { locale, slug } = await params;
+  const loc = locale as Locale;
+  const dict = getDictionary(loc);
+  const post = await getPostBySlug(slug, loc);
+  const allPosts = getAllPostMetas(loc);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -57,7 +70,7 @@ export default async function PostPage({ params }: Props) {
     description: post.description,
     datePublished: new Date(post.date).toISOString(),
     author: { "@type": "Person", name: "minsnote" },
-    url: `https://jinwonmin.github.io/posts/${slug}`,
+    url: `https://jinwonmin.github.io/${locale}/posts/${slug}`,
     keywords: post.tags.join(", "),
   };
 
@@ -65,7 +78,7 @@ export default async function PostPage({ params }: Props) {
     <div className="flex gap-0 lg:-mx-4">
       <ReadingProgress />
       {post.series && (
-        <SeriesArrows series={post.series} currentSlug={slug} posts={allPosts} />
+        <SeriesArrows series={post.series} currentSlug={slug} posts={allPosts} locale={loc} />
       )}
       <script
         type="application/ld+json"
@@ -75,19 +88,19 @@ export default async function PostPage({ params }: Props) {
       <Sidebar>
         <nav>
           <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3">
-            On this page
+            {dict.post.onThisPage}
           </h3>
-          <TableOfContents />
+          <TableOfContents dict={dict} />
         </nav>
         <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-800">
           <Link
-            href="/"
+            href={`/${locale}`}
             className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to blog
+            {dict.post.backToBlog}
           </Link>
         </div>
       </Sidebar>
@@ -101,7 +114,7 @@ export default async function PostPage({ params }: Props) {
                 dateTime={post.date}
                 className="text-sm text-gray-500 dark:text-gray-400"
               >
-                {formatDate(post.date)}
+                {formatDate(post.date, loc)}
               </time>
             </div>
             <h1 className="text-2xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-gray-100 sm:text-3xl lg:text-4xl">
@@ -113,7 +126,7 @@ export default async function PostPage({ params }: Props) {
                   {post.tags.map((tag) => (
                     <Link
                       key={tag}
-                      href={`/tags/${encodeURIComponent(tag)}`}
+                      href={`/${locale}/tags/${encodeURIComponent(tag)}`}
                       className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
                     >
                       {tag}
@@ -138,14 +151,14 @@ export default async function PostPage({ params }: Props) {
           />
 
           {post.series && (
-            <SeriesNav series={post.series} currentSlug={slug} posts={allPosts} />
+            <SeriesNav series={post.series} currentSlug={slug} posts={allPosts} locale={loc} dict={dict} />
           )}
         </article>
 
-        <Comments slug={slug} />
+        <Comments slug={slug} locale={loc} />
 
         {/* Recent Posts */}
-        <RecentPosts posts={allPosts} currentSlug={slug} currentTags={post.tags} />
+        <RecentPosts posts={allPosts} currentSlug={slug} currentTags={post.tags} locale={loc} dict={dict} />
       </div>
     </div>
   );

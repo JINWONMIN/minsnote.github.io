@@ -7,6 +7,7 @@ import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import readingTime from "reading-time";
+import { type Locale, defaultLocale } from "./i18n";
 
 export interface Post {
   slug: string;
@@ -31,9 +32,13 @@ export interface PostMeta {
   seriesOrder?: number;
 }
 
-const postsDirectory = path.join(process.cwd(), "posts");
+function getPostsDirectory(locale: Locale): string {
+  return path.join(process.cwd(), "posts", locale);
+}
 
-export function getAllPostMetas(): PostMeta[] {
+export function getAllPostMetas(locale: Locale = defaultLocale): PostMeta[] {
+  const postsDirectory = getPostsDirectory(locale);
+  if (!fs.existsSync(postsDirectory)) return [];
   const fileNames = fs.readdirSync(postsDirectory);
 
   const posts = fileNames
@@ -45,10 +50,14 @@ export function getAllPostMetas(): PostMeta[] {
       const { data, content } = matter(fileContents);
       const stats = readingTime(content);
 
+      const date = data.date instanceof Date
+        ? data.date.toISOString().split("T")[0]
+        : String(data.date);
+
       return {
         slug,
         title: data.title,
-        date: data.date,
+        date,
         description: data.description || "",
         tags: data.tags || [],
         readingTime: stats.text,
@@ -63,7 +72,8 @@ export function getAllPostMetas(): PostMeta[] {
   });
 }
 
-export async function getPostBySlug(slug: string): Promise<Post> {
+export async function getPostBySlug(slug: string, locale: Locale = defaultLocale): Promise<Post> {
+  const postsDirectory = getPostsDirectory(locale);
   const fullPath = path.join(postsDirectory, `${slug}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
@@ -77,10 +87,14 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     .process(content);
   const contentHtml = processedContent.toString();
 
+  const date = data.date instanceof Date
+    ? data.date.toISOString().split("T")[0]
+    : String(data.date);
+
   return {
     slug,
     title: data.title,
-    date: data.date,
+    date,
     description: data.description || "",
     tags: data.tags || [],
     readingTime: stats.text,
@@ -90,7 +104,9 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   };
 }
 
-export function getAllPostSlugs(): string[] {
+export function getAllPostSlugs(locale: Locale = defaultLocale): string[] {
+  const postsDirectory = getPostsDirectory(locale);
+  if (!fs.existsSync(postsDirectory)) return [];
   const fileNames = fs.readdirSync(postsDirectory);
   return fileNames
     .filter((name) => name.endsWith(".md"))
