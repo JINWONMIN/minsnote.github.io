@@ -33,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
+      className={`dark ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
       suppressHydrationWarning
     >
       <head>
