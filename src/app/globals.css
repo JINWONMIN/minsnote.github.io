@@ -176,3 +176,39 @@ pre:hover .code-copy-btn {
 .prose img:hover {
   opacity: 0.85;
 }
+
+/* Mermaid diagrams - hide raw code blocks */
+pre:has(> code.language-mermaid) {
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: hidden;
+}
+
+@keyframes mermaid-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mermaid-diagram {
+  max-width: 100%;
+  margin: 1.5rem auto;
+  display: flex;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  animation: mermaid-fade-in 0.4s ease-out;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
