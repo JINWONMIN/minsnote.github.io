@@ -34,6 +34,7 @@ export default function RootLayout({
   return (
     <html
       className={`dark ${spaceGrotesk.variable} ${jetbrainsMono.variable} h-full scroll-smooth`}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
