@@ -216,6 +216,34 @@ KV의 TTL 최소값이 **60초**였다. 공식 문서 어딘가에 적혀 있었
 
 ***
 
+## 투데이 카운터와 타임존
+
+방문자 카운터를 배포하고 나서, 투데이 수치가 이상하게 초기화되는 걸 발견했다. 한국 시간 자정이 아니라 **오전 9시**에 리셋되고 있었다.
+
+원인은 `todayKey()` 함수였다:
+
+```typescript
+// Before — UTC 기준
+function todayKey(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+```
+
+`toISOString()`은 **UTC 시간**을 반환한다. UTC 자정은 한국 시간 오전 9시다. 그래서 투데이 카운터가 오전 9시에 초기화되고 있었던 것이다.
+
+KST(UTC+9) 기준으로 변경했다:
+
+```typescript
+// After — KST 기준
+function todayKey(): string {
+  return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+```
+
+UTC 타임스탬프에 9시간(밀리초)을 더한 뒤 날짜를 추출한다. Cloudflare Workers는 타임존 설정이 없어서 `Intl.DateTimeFormat`을 쓸 수도 있지만, 단순 덧셈이 가장 가볍고 명확했다.
+
+***
+
 ## 정리
 
 | 구성 요소 | 역할 |
