@@ -46,7 +46,10 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
     const qs = params.toString();
     const currentQs = searchParams.toString();
-    if (qs === currentQs) return;
+    if (qs === currentQs) {
+      isInternalUpdate.current = false;
+      return;
+    }
     isInternalUpdate.current = true;
     const newUrl = qs ? `${pathname}?${qs}` : pathname;
     router.replace(newUrl, { scroll: false });
@@ -54,10 +57,7 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
 
   // Sync from URL params (only for external changes like language switch)
   useEffect(() => {
-    if (isInternalUpdate.current) {
-      isInternalUpdate.current = false;
-      return;
-    }
+    if (isInternalUpdate.current) return;
     setActiveTag(searchParams.get("tag"));
     setActiveSeries(searchParams.get("series"));
     setSearchQuery(searchParams.get("q") || "");
