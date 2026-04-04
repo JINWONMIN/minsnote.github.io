@@ -37,23 +37,28 @@ export default function HomeContent({ posts, tags, series, locale }: HomeContent
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const loaderRef = useRef<HTMLDivElement>(null);
 
-  // Sync filter state to URL
+  // Sync filter state to URL (skip if already matching)
   useEffect(() => {
     const params = new URLSearchParams();
     if (activeTag) params.set("tag", activeTag);
     if (activeSeries) params.set("series", activeSeries);
     if (searchQuery.trim()) params.set("q", searchQuery.trim());
     const qs = params.toString();
+    const currentQs = searchParams.toString();
+    if (qs === currentQs) return;
     const newUrl = qs ? `${pathname}?${qs}` : pathname;
     router.replace(newUrl, { scroll: false });
-  }, [activeTag, activeSeries, searchQuery, pathname, router]);
+  }, [activeTag, activeSeries, searchQuery, pathname, router, searchParams]);
 
   // Sync from URL params when locale changes (e.g. language switch)
   useEffect(() => {
-    setActiveTag(searchParams.get("tag"));
-    setActiveSeries(searchParams.get("series"));
-    setSearchQuery(searchParams.get("q") || "");
-  }, [searchParams]);
+    const tag = searchParams.get("tag");
+    const s = searchParams.get("series");
+    const q = searchParams.get("q") || "";
+    if (tag !== activeTag) setActiveTag(tag);
+    if (s !== activeSeries) setActiveSeries(s);
+    if (q !== searchQuery) setSearchQuery(q);
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const filteredPosts = posts
     .filter((post) => {
