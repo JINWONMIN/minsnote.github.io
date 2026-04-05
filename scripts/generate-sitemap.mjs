@@ -41,12 +41,12 @@ for (const locale of locales) {
 
   // About
   urls.push(
-    `<url><loc>${BASE_URL}/${locale}/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`
+    `<url><loc>${BASE_URL}/${locale}/about</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.5</priority><xhtml:link rel="alternate" hreflang="ko" href="${BASE_URL}/ko/about"/><xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/about"/></url>`
   );
 
   // Tags index
   urls.push(
-    `<url><loc>${BASE_URL}/${locale}/tags</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
+    `<url><loc>${BASE_URL}/${locale}/tags</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority><xhtml:link rel="alternate" hreflang="ko" href="${BASE_URL}/ko/tags"/><xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/tags"/></url>`
   );
 
   // Posts
@@ -59,7 +59,7 @@ for (const locale of locales) {
   // Tag pages
   Array.from(tags).forEach((tag) => {
     urls.push(
-      `<url><loc>${BASE_URL}/${locale}/tags/${encodeURIComponent(tag)}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`
+      `<url><loc>${BASE_URL}/${locale}/tags/${encodeURIComponent(tag)}</loc><changefreq>weekly</changefreq><priority>0.6</priority><xhtml:link rel="alternate" hreflang="ko" href="${BASE_URL}/ko/tags/${encodeURIComponent(tag)}"/><xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/tags/${encodeURIComponent(tag)}"/></url>`
     );
   });
 }
