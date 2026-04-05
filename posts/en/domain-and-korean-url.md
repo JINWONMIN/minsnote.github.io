@@ -12,7 +12,7 @@ seriesOrder: 4
 
 ## The Rise and Fall of basePath
 
-In [Part 1: Blog Tech Stack](/posts/tech-stack), I wrote about fixing the GitHub Pages sub-path deployment issue with `basePath` and `assetPrefix`. Since the repo name was `minsnote.github.io`, the site URL ended up as `https://jinwonmin.github.io/minsnote.github.io/`, which messed up asset paths.
+In [Part 1: Blog Tech Stack](/en/posts/tech-stack), I wrote about fixing the GitHub Pages sub-path deployment issue with `basePath` and `assetPrefix`. Since the repo name was `minsnote.github.io`, the site URL ended up as `https://jinwonmin.github.io/minsnote.github.io/`, which messed up asset paths.
 
 But that wasn't a fundamental fix. Setting `basePath` means every internal link gets the sub-path appended, sitemap URLs get messed up, and CMS configuration gets complicated. One sub-path was causing headaches everywhere.
 

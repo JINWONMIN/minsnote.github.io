@@ -12,7 +12,7 @@ seriesOrder: 5
 
 ## 조회수만으로는 부족하다
 
-[2편: Cloudflare Workers로 블로그 API 만들기](/posts/cloudflare-workers-api)에서 조회수와 댓글 API를 만들었다. 조회수는 달아놨는데, 막상 보니까 뭔가 심심하다. 글을 읽은 사람이 "괜찮았다"는 표현을 할 수 있는 방법이 없었다. 댓글을 쓸 정도는 아니지만, 가볍게 반응을 남길 수 있는 장치가 필요했다.
+[2편: Cloudflare Workers로 블로그 API 만들기](/ko/posts/cloudflare-workers-api)에서 조회수와 댓글 API를 만들었다. 조회수는 달아놨는데, 막상 보니까 뭔가 심심하다. 글을 읽은 사람이 "괜찮았다"는 표현을 할 수 있는 방법이 없었다. 댓글을 쓸 정도는 아니지만, 가볍게 반응을 남길 수 있는 장치가 필요했다.
 
 좋아요 버튼을 달기로 했다.
 
@@ -20,7 +20,7 @@ seriesOrder: 5
 
 ## API 설계: KV로 충분한가
 
-좋아요 데이터를 어디에 저장할지 고민했다. [2편: Cloudflare Workers로 블로그 API 만들기](/posts/cloudflare-workers-api)에서 조회수는 KV, 댓글은 D1에 저장한 구조를 이미 만들어 뒀다.
+좋아요 데이터를 어디에 저장할지 고민했다. [2편: Cloudflare Workers로 블로그 API 만들기](/ko/posts/cloudflare-workers-api)에서 조회수는 KV, 댓글은 D1에 저장한 구조를 이미 만들어 뒀다.
 
 | 저장소 | 적합한 경우 | 좋아요에 적합? |
 | --- | --- | --- |

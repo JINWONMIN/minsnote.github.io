@@ -12,7 +12,7 @@ seriesOrder: 4
 
 ## basePath의 등장과 퇴장
 
-[1편: 블로그 기술 스택](/posts/tech-stack)에서 `basePath`와 `assetPrefix`로 GitHub Pages 서브 경로 배포 문제를 해결했다고 썼다. 레포 이름이 `minsnote.github.io`이다 보니 사이트 URL이 `https://jinwonmin.github.io/minsnote.github.io/`로 잡혀서 자산 경로가 꼬이는 문제였다.
+[1편: 블로그 기술 스택](/ko/posts/tech-stack)에서 `basePath`와 `assetPrefix`로 GitHub Pages 서브 경로 배포 문제를 해결했다고 썼다. 레포 이름이 `minsnote.github.io`이다 보니 사이트 URL이 `https://jinwonmin.github.io/minsnote.github.io/`로 잡혀서 자산 경로가 꼬이는 문제였다.
 
 그런데 이게 근본적인 해결이 아니었다. `basePath`를 설정하면 모든 내부 링크에 서브 경로가 붙고, sitemap URL도 꼬이고, CMS 설정도 복잡해진다. 서브 경로 하나 때문에 온갖 곳에서 경로를 신경 써야 했다.
 
