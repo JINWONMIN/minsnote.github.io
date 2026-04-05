@@ -146,14 +146,19 @@ function CommentItem({
 }) {
   const [mode, setMode] = useState<"view" | "edit" | "delete" | "reply">("view");
   const [password, setPassword] = useState("");
+  const [adminToken, setAdminToken] = useState("");
   const [editContent, setEditContent] = useState(comment.content);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const isReply = comment.parent_id !== null;
 
+  const reserved = ["minsnote", "민스노트", "민즈노트"];
+  const isOwnerComment = reserved.some((r) => comment.nickname.toLowerCase() === r.toLowerCase());
+
   function reset() {
     setMode("view");
     setPassword("");
+    setAdminToken("");
     setEditContent(comment.content);
     setError("");
   }
@@ -161,7 +166,7 @@ function CommentItem({
   async function handleDelete() {
     setError("");
     setLoading(true);
-    const result = await deleteComment(comment.id, password).catch(() => ({
+    const result = await deleteComment(comment.id, password, isOwnerComment ? adminToken : undefined).catch(() => ({
       success: false,
       error: dict.networkError,
     }));
@@ -176,7 +181,7 @@ function CommentItem({
   async function handleEdit() {
     setError("");
     setLoading(true);
-    const result = await editComment(comment.id, editContent, password).catch(
+    const result = await editComment(comment.id, editContent, password, isOwnerComment ? adminToken : undefined).catch(
       () => ({ success: false, error: dict.networkError })
     );
     setLoading(false);
@@ -247,18 +252,28 @@ function CommentItem({
               {comment.content}
             </p>
             <div className="flex items-center gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-              <input
-                type="password"
-                inputMode="numeric"
-                maxLength={4}
-                placeholder={dict.password}
-                value={password}
-                onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
-                className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
+              {isOwnerComment ? (
+                <input
+                  type="password"
+                  placeholder={dict.adminToken}
+                  value={adminToken}
+                  onChange={(e) => setAdminToken(e.target.value)}
+                  className="w-36 px-2 py-1 text-xs rounded border border-amber-300 dark:border-amber-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                />
+              ) : (
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={4}
+                  placeholder={dict.password}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
+                  className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-red-500"
+                />
+              )}
               <button
                 onClick={handleDelete}
-                disabled={password.length !== 4 || loading}
+                disabled={(isOwnerComment ? !adminToken : password.length !== 4) || loading}
                 className="px-2 py-1 text-xs font-medium rounded bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {loading ? "..." : dict.delete}
@@ -284,18 +299,28 @@ function CommentItem({
               className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 resize-y"
             />
             <div className="flex items-center gap-2">
-              <input
-                type="password"
-                inputMode="numeric"
-                maxLength={4}
-                placeholder={dict.password}
-                value={password}
-                onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
-                className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
-              />
+              {isOwnerComment ? (
+                <input
+                  type="password"
+                  placeholder={dict.adminToken}
+                  value={adminToken}
+                  onChange={(e) => setAdminToken(e.target.value)}
+                  className="w-36 px-2 py-1 text-xs rounded border border-amber-300 dark:border-amber-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-amber-500"
+                />
+              ) : (
+                <input
+                  type="password"
+                  inputMode="numeric"
+                  maxLength={4}
+                  placeholder={dict.password}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
+                  className="w-28 px-2 py-1 text-xs rounded border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500"
+                />
+              )}
               <button
                 onClick={handleEdit}
-                disabled={password.length !== 4 || !editContent.trim() || loading}
+                disabled={(isOwnerComment ? !adminToken : password.length !== 4) || !editContent.trim() || loading}
                 className="px-2 py-1 text-xs font-medium rounded bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {loading ? "..." : dict.edit}

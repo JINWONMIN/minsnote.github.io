@@ -93,20 +93,24 @@ export async function postComment(slug: string, nickname: string, content: strin
   return res.json();
 }
 
-export async function deleteComment(id: number, password: string): Promise<{ success: boolean; error?: string }> {
+export async function deleteComment(id: number, password: string, adminToken?: string): Promise<{ success: boolean; error?: string }> {
+  const payload: Record<string, unknown> = { id, password };
+  if (adminToken) payload.admin_token = adminToken;
   const res = await fetch(`${API_BASE}/api/comments`, {
     method: "DELETE",
     headers: headers(),
-    body: JSON.stringify({ id, password }),
+    body: JSON.stringify(payload),
   });
   return res.json();
 }
 
-export async function editComment(id: number, content: string, password: string): Promise<{ success: boolean; error?: string }> {
+export async function editComment(id: number, content: string, password: string, adminToken?: string): Promise<{ success: boolean; error?: string }> {
+  const payload: Record<string, unknown> = { id, content, password };
+  if (adminToken) payload.admin_token = adminToken;
   const res = await fetch(`${API_BASE}/api/comments`, {
     method: "PUT",
     headers: headers(),
-    body: JSON.stringify({ id, content, password }),
+    body: JSON.stringify(payload),
   });
   return res.json();
 }
