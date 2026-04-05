@@ -12,7 +12,7 @@ seriesOrder: 5
 
 ## View Counts Alone Weren't Enough
 
-In [Part 2: Building a Blog API with Cloudflare Workers](/posts/cloudflare-workers-api), I set up view count and comment APIs. View counts were in place, but something felt missing. There was no way for readers to say "hey, that was pretty good." Not everyone wants to write a comment, but having a lightweight way to react seemed necessary.
+In [Part 2: Building a Blog API with Cloudflare Workers](/en/posts/cloudflare-workers-api), I set up view count and comment APIs. View counts were in place, but something felt missing. There was no way for readers to say "hey, that was pretty good." Not everyone wants to write a comment, but having a lightweight way to react seemed necessary.
 
 So I decided to add a like button.
 
@@ -20,7 +20,7 @@ So I decided to add a like button.
 
 ## API Design: Is KV Enough?
 
-I had to figure out where to store like data. In [Part 2: Building a Blog API with Cloudflare Workers](/posts/cloudflare-workers-api), I'd already set up a structure where views go to KV and comments go to D1.
+I had to figure out where to store like data. In [Part 2: Building a Blog API with Cloudflare Workers](/en/posts/cloudflare-workers-api), I'd already set up a structure where views go to KV and comments go to D1.
 
 | Storage | Good For | Good for Likes? |
 | --- | --- | --- |
