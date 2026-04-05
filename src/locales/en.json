@@ -39,7 +39,7 @@
   "comments": {
     "title": "Comments",
     "nickname": "Nickname",
-    "password": "4-digit password",
+    "password": "4-digit PW",
     "commentPlaceholder": "Leave a comment",
     "replyPlaceholder": "Write a reply",
     "submit": "Post comment",

@@ -45,7 +45,12 @@ export default function Header({ locale }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href={`/${locale}`} className="flex items-center gap-2 group">
+        <Link
+          href={`/${locale}`}
+          scroll={false}
+          onClick={() => window.scrollTo({ top: 0, behavior: "instant" })}
+          className="flex items-center gap-2 group"
+        >
           <svg
             className="h-7 w-7 text-primary-500"
             viewBox="0 0 24 24"
