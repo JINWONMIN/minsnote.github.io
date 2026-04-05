@@ -82,11 +82,13 @@ export async function getComments(slug: string): Promise<Comment[]> {
   return data.comments;
 }
 
-export async function postComment(slug: string, nickname: string, content: string, password: string, parentId?: number | null): Promise<{ success: boolean; error?: string }> {
+export async function postComment(slug: string, nickname: string, content: string, password: string, parentId?: number | null, adminToken?: string): Promise<{ success: boolean; error?: string }> {
+  const payload: Record<string, unknown> = { slug, nickname, content, password, parent_id: parentId ?? null };
+  if (adminToken) payload.admin_token = adminToken;
   const res = await fetch(`${API_BASE}/api/comments`, {
     method: "POST",
     headers: headers(),
-    body: JSON.stringify({ slug, nickname, content, password, parent_id: parentId ?? null }),
+    body: JSON.stringify(payload),
   });
   return res.json();
 }

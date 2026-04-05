@@ -56,7 +56,8 @@
     "networkError": "A network error occurred.",
     "submitError": "Failed to post comment.",
     "deleteError": "Failed to delete.",
-    "editError": "Failed to edit."
+    "editError": "Failed to edit.",
+    "adminToken": "Admin token"
   },
   "search": {
     "placeholder": "Search..."
