@@ -8,8 +8,10 @@ https://jinwonmin.github.io
 
 **Core**
 - Markdown-based blog with tag filtering and series navigation
+- i18n support (ko / en) with locale-prefixed routes
 - Post views, likes, visitor counter (Cloudflare Workers API)
 - Comments with password-based edit/delete and threaded replies
+- Reserved nickname blocking with admin token authentication
 - Browser-based writing via Sveltia CMS
 
 **UX**
@@ -17,15 +19,16 @@ https://jinwonmin.github.io
 - Post search with Cmd+K shortcut and keyword highlight
 - Reading progress bar
 - Scroll to top button and infinite scroll
-- Image lightbox
+- Image lightbox with lazy loading
 - Related posts recommendation (tag similarity)
 - Series navigation with floating arrows
 - Mermaid diagram rendering
+- Custom 404 page
 
 **SEO & Security**
-- Sitemap, RSS feed, robots.txt
-- Canonical URL, JSON-LD structured data
-- OpenGraph meta tags
+- Sitemap with hreflang, RSS feed, robots.txt
+- Canonical URL, JSON-LD structured data (BlogPosting schema)
+- OpenGraph + Twitter card meta tags
 - Text copy protection (code blocks excluded)
 - API key authentication
 
@@ -73,9 +76,13 @@ Generates static HTML, sitemap.xml, and rss.xml.
 ```
 ├── src/
 │   ├── app/              # Next.js App Router
+│   │   └── [locale]/     # Locale-based routing (ko, en)
 │   ├── components/       # UI components
-│   └── lib/              # Markdown parsing, API client
-├── posts/                # Markdown posts
+│   ├── lib/              # Markdown parsing, API client, i18n
+│   └── locales/          # Translation files (ko.json, en.json)
+├── posts/
+│   ├── ko/               # Korean posts
+│   └── en/               # English posts
 ├── public/               # Static files (CMS, search engine verification)
 ├── scripts/              # Sitemap, RSS generation
 └── .github/workflows/    # GitHub Actions deploy
