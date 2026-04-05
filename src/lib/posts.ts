@@ -7,7 +7,20 @@ import remarkRehype from "remark-rehype";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import readingTime from "reading-time";
+import { visit } from "unist-util-visit";
+import type { Root, Element } from "hast";
 import { type Locale, defaultLocale } from "./i18n";
+
+function rehypeLazyImages() {
+  return (tree: Root) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName === "img") {
+        node.properties = node.properties || {};
+        node.properties.loading = "lazy";
+      }
+    });
+  };
+}
 
 export interface Post {
   slug: string;
@@ -83,6 +96,7 @@ export async function getPostBySlug(slug: string, locale: Locale = defaultLocale
     .use(remarkGfm)
     .use(remarkRehype)
     .use(rehypeHighlight)
+    .use(rehypeLazyImages)
     .use(rehypeStringify)
     .process(content);
   const contentHtml = processedContent.toString();

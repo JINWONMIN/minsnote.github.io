@@ -33,6 +33,10 @@ export async function generateMetadata({
         en: "/en",
       },
     },
+    twitter: {
+      card: "summary",
+      site: "@minsnote",
+    },
   };
 }
 

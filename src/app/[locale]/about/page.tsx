@@ -3,6 +3,11 @@ import AboutProfile from "@/components/AboutProfile";
 
 export const metadata: Metadata = {
   title: "About",
+  description: "About minsnote",
+  openGraph: {
+    title: "About",
+    description: "About minsnote",
+  },
 };
 
 export default function AboutPage() {

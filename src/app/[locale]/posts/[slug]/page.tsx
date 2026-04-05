@@ -53,6 +53,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: new Date(post.date).toISOString(),
       tags: post.tags,
     },
+    twitter: {
+      card: "summary",
+      title: post.title,
+      description: post.description,
+    },
   };
 }
 
@@ -69,8 +74,17 @@ export default async function PostPage({ params }: Props) {
     headline: post.title,
     description: post.description,
     datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.date).toISOString(),
     author: { "@type": "Person", name: "minsnote" },
+    publisher: {
+      "@type": "Person",
+      name: "minsnote",
+    },
     url: `https://jinwonmin.github.io/${locale}/posts/${slug}`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://jinwonmin.github.io/${locale}/posts/${slug}`,
+    },
     keywords: post.tags.join(", "),
   };
 
