@@ -9,9 +9,9 @@ series: Blog Dev Story
 seriesOrder: 7
 ---
 
-## My Content Was Wide Open
+## Why Not Try Copy Protection?
 
-As posts started piling up, something began to bother me. Drag-selecting the body text grabbed everything, and a single Ctrl+C copied the entire article. Code blocks obviously need to stay copyable — it's a tech blog — but leaving the prose completely unprotected felt careless.
+I'd seen blogs where body text can't be drag-selected. It got me thinking — "why not add that to mine?" To be clear, this blog runs on GitHub's free plan, so the repository is public. Anyone who really wants the content can just find the markdown source. But there's a meaningful gap between one-click Ctrl+C in the browser and digging through a repo for raw files. Since it's a tech blog, code blocks need to stay freely copyable — I just wanted a light barrier on the prose.
 
 SEO needed attention at the same time. In [Part 6: Adding i18n to a Static Blog](/en/posts/i18n-static-blog), I covered `hreflang` and sitemap cross-references, but per-post structured data (JSON-LD) and Open Graph metadata were still missing. I tackled copy protection and SEO together.
 
